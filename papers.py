@@ -15,6 +15,7 @@ import re
 import datetime
 import json
 
+#open all the files and save the data structures
 
 def decide(input_file, watchlist_file, countries_file):
     """
@@ -27,12 +28,19 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
     return ["Reject"]
-# just to see how it works
+#going to need to refer to the country file
+#for loop for every user which checks all the criteria and decides whether or not they reject or accept
+#make helper functions
+#append to a list
+#return a list of rejected people (above)
+#find a way to nicely code the conditions
+
+#Book an appointment with Sasa
 
 
 def valid_passport_format(passport_number):
     """
-    Checks whether a pasport number is five sets of five alpha-number characters separated by dashes
+    Checks whether a passport number is five sets of five alpha-number characters separated by dashes
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
     """
