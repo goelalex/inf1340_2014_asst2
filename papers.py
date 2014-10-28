@@ -27,6 +27,7 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
     return ["Reject"]
+# just to see how it works
 
 
 def valid_passport_format(passport_number):
