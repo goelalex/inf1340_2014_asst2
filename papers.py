@@ -15,7 +15,17 @@ import re
 import datetime
 import json
 
+with open("countries.json","r") as countries_reader:
+    countries=countries_reader.readlines()
+    countries_reader.close()
 
+with open("example_entries.json","r")as entries_reader:
+    entries=entries_reader.readlines()
+    entries_reader.close()
+
+
+
+'''
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted
@@ -32,7 +42,7 @@ def decide(input_file, watchlist_file, countries_file):
 
 def valid_passport_format(passport_number):
     """
-    Checks whether a pasport number is five sets of five alpha-number characters separated by dashes
+    Checks whether a passport number is five sets of five alpha-number characters separated by dashes
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
     """
@@ -55,3 +65,4 @@ def valid_date_format(date_string):
         return True
     except ValueError:
         return False
+'''
