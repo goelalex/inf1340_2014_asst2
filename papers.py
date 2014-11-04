@@ -16,6 +16,7 @@ import datetime
 import json
 
 #open all the files and save the data structures
+file_reader =
 
 def decide(input_file, watchlist_file, countries_file):
     """
