@@ -25,15 +25,22 @@ with open("example_entries.json","r")as entries_reader:
     #trying to get json file into python format data, for example a list instead of a pile of strings
     i = 0
     each_entry = {}
+    list_first_name = []
+    list_last_name = []
+    list_passport = []
     while i < len(input_file_list):
         each_entry = input_file_list[i]
         each_entry_first_name = each_entry["first_name"]
         each_entry_last_name = each_entry["last_name"]
         each_entry_passport = each_entry["passport"]
+
+        list_first_name.append(each_entry_first_name)
+        list_last_name.append(each_entry_last_name)
+        list_passport.append(each_entry_passport)
         i = i + 1
 
-        print(each_entry_first_name)
-        print(each_entry_last_name)
+        print(list_passport)
+
 
     entries_reader.close()
 
