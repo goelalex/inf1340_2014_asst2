@@ -16,16 +16,33 @@ import datetime
 import json
 
 with open("countries.json","r") as countries_reader:
-    countries=countries_reader.readlines()
+    countries_file = countries_reader.readlines()
     countries_reader.close()
 
 with open("example_entries.json","r")as entries_reader:
-    entries=entries_reader.readlines()
+    input_file = entries_reader.read()
+    input_file_list = json.loads(input_file)
+    #trying to get json file into python format data, for example a list instead of a pile of strings
+    i = 0
+    each_entry = {}
+    while i < len(input_file_list):
+        each_entry = input_file_list[i]
+        each_entry_first_name = each_entry["first_name"]
+        each_entry_last_name = each_entry["last_name"]
+        each_entry_passport = each_entry["passport"]
+        i = i + 1
+
+        print(each_entry_first_name)
+        print(each_entry_last_name)
+
     entries_reader.close()
 
 
 
 '''
+  names=input_file
+watchlist=[names,passport]
+
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted
@@ -37,7 +54,6 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
     return ["Reject"]
-# just to see how it works
 
 
 def valid_passport_format(passport_number):
