@@ -15,6 +15,7 @@ import re
 import datetime
 import json
 
+
 with open("countries.json","r") as countries_reader:
     countries_file = countries_reader.readlines()
     countries_reader.close()
@@ -28,8 +29,15 @@ with open("example_entries.json","r")as entries_reader:
     list_first_name = []
     list_last_name = []
     list_passport = []
+
     while i < len(input_file_list):
         each_entry = input_file_list[i]
+        each_entry_total=
+        print(each_entry))
+
+
+
+
         each_entry_first_name = each_entry["first_name"]
         each_entry_last_name = each_entry["last_name"]
         each_entry_passport = each_entry["passport"]
@@ -37,18 +45,22 @@ with open("example_entries.json","r")as entries_reader:
         list_first_name.append(each_entry_first_name)
         list_last_name.append(each_entry_last_name)
         list_passport.append(each_entry_passport)
+
         i = i + 1
 
-        print(list_passport)
+
+
+
+
 
 
     entries_reader.close()
 
-
-
-'''
   names=input_file
 watchlist=[names,passport]
+
+
+
 
 def decide(input_file, watchlist_file, countries_file):
     """
@@ -60,6 +72,10 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
+    watch
+
+
+
     return ["Reject"]
 
 
@@ -88,4 +104,4 @@ def valid_date_format(date_string):
         return True
     except ValueError:
         return False
-'''
+
