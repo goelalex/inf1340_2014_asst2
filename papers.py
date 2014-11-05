@@ -14,11 +14,10 @@ __status__ = "Prototype"
 import re
 import datetime
 import json
-
+'''
 with open("example_entries.json", "r") as file_reader:
     file_contents = file_reader.readlines()
-    print(len(file_contents))
-print(file_contents)
+
 
 
 #open all the files and save the data structures
@@ -26,8 +25,9 @@ with open("example_entries.json", "r") as file_reader:
     file_contents = file_reader.readlines()
     print(len(file_contents))
 print(file_contents)
+'''
 
-
+'''
 with open("countries.json","r") as countries_reader:
     countries_file = countries_reader.readlines()
     countries_reader.close()
@@ -44,8 +44,6 @@ with open("example_entries.json","r")as entries_reader:
 
     while i < len(input_file_list):
         each_entry = input_file_list[i]
-        each_entry_total=
-        print(each_entry))
 
 
 
@@ -61,18 +59,11 @@ with open("example_entries.json","r")as entries_reader:
         i = i + 1
 
 
-
-
-
-
-
     entries_reader.close()
 
-  names=input_file
-watchlist=[names,passport]
 
 
-
+'''
 
 def decide(input_file, watchlist_file, countries_file):
     """
@@ -84,12 +75,59 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
-    watch
+
+#check whether the entry is in the watch_list
+#first try to get names and passport number to be checked
+i = 0
+each_watchlist = {}
+
+with open("test_watchlist.json","r") as test_watchlist:
+    # I am putting test_watchlist.json here to check whether the codes run.
+    # When put into use,it should be replaced by parameter watchlist_file.
+    test_watchlist_contents = test_watchlist.read()
+    test_watchlist_contents_list = json.loads(test_watchlist_contents)
+    #this get the entry to be tested as a list with only one element, which means one entry
+    each_test_watchlist_contents = test_watchlist_contents_list[0]
+    #this line get the element out as a dictionary
+test_watchlist.close()
+
+#second build a check pool according to watchlist json file
+with open("watchlist.json","r") as watchlist:
+    watchlist_contents = watchlist.read()
+    watchlist_contents_list = json.loads(watchlist_contents)
+
+    #introduce these variables I need to use later
+    watchlist_first_name = []
+    watchlist_passport = []
+
+    #building a check pool by piling up all the first names and passport numbers
+    while i < len(watchlist_contents_list):
+        each_watchlist = watchlist_contents_list[i]
+        each_watchlist_first_name = each_watchlist["first_name"]
+        watchlist_first_name .append(each_watchlist_first_name)
+        each_watchlist_passport = each_watchlist["passport"]
+        watchlist_passport .append(each_watchlist_passport)
+        i = i + 1
+watchlist.close()
+
+#check whether the test entry falls in the check pool
+if each_test_watchlist_contents['passport'] in watchlist_passport:
+    print("Secondary")
+
+elif each_test_watchlist_contents['first_name'] in watchlist_first_name:
+    print("Secondary")
+
+else:
+    print("not in watchlist")
 
 
+
+
+
+
+'''
 
     return ["Reject"]
-<<<<<<< HEAD
 
 
 def valid_passport_format(passport_number):
@@ -98,7 +136,7 @@ def valid_passport_format(passport_number):
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
     """
-=======
+
 
 #going to need to refer to the country file
 #for loop for every user which checks all the criteria and decides whether or not they reject or accept
@@ -110,9 +148,10 @@ def valid_passport_format(passport_number):
 #Book an appointment with Sasa
 
 
+
 def valid_passport_format(passport_number):
 
->>>>>>> FETCH_HEAD
+
     passport_format = re.compile('.{5}-.{5}-.{5}-.{5}-.{5}')
 
     if passport_format.match(passport_number):
@@ -132,9 +171,9 @@ def valid_date_format(date_string):
         datetime.datetime.strptime(date_string, '%Y-%m-%d')
         return True
     except ValueError:
-<<<<<<< HEAD
-        return False
 
-=======
         return False
->>>>>>> FETCH_HEAD
+'''
+
+
+
