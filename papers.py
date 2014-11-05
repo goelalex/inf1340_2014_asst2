@@ -15,6 +15,12 @@ import re
 import datetime
 import json
 
+with open("example_entries.json", "r") as file_reader:
+    file_contents = file_reader.readlines()
+    print(len(file_contents))
+print(file_contents)
+
+
 #open all the files and save the data structures
 with open("example_entries.json", "r") as file_reader:
     file_contents = file_reader.readlines()
