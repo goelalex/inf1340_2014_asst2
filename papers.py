@@ -32,34 +32,7 @@ with open("countries.json","r") as countries_reader:
     countries_file = countries_reader.readlines()
     countries_reader.close()
 
-with open("example_entries.json","r")as entries_reader:
-    input_file = entries_reader.read()
-    input_file_list = json.loads(input_file)
-    #trying to get json file into python format data, for example a list instead of a pile of strings
-    i = 0
-    each_entry = {}
-    list_first_name = []
-    list_last_name = []
-    list_passport = []
 
-    while i < len(input_file_list):
-        each_entry = input_file_list[i]
-
-
-
-
-        each_entry_first_name = each_entry["first_name"]
-        each_entry_last_name = each_entry["last_name"]
-        each_entry_passport = each_entry["passport"]
-
-        list_first_name.append(each_entry_first_name)
-        list_last_name.append(each_entry_last_name)
-        list_passport.append(each_entry_passport)
-
-        i = i + 1
-
-
-    entries_reader.close()
 
 
 
@@ -120,7 +93,56 @@ elif each_test_watchlist_contents['first_name'] in watchlist_first_name:
 else:
     print("not in watchlist")
 
+#check all the returning cases
+visit_visa_list=[]
+with open("example_entries.json","r")as entries:
+    entries_content = entries.read()
+    entries_content_list = json.loads(entries_content)
+    #trying to get json file into python format data, for example a list instead of a pile of strings
+    each_entry = {}
 
+    #check all the returning cases
+    while i < len(entries_content_list):
+        each_entry = entries_content_list[i]
+
+        if each_entry["entry_reason"] == "returning":
+            home_dic=each_entry["home"]
+            if home_dic["country"] == "KAN":
+                print("accepted")
+        else:
+            if each_entry["entry_reason"] == "visit":
+                from_dic=each_entry["from"]
+                if from_dic["country"] in visit_visa_list:
+                    #still don't know how to deal with cases where there is no visa
+                    visa_dic = each_entry["visa"]
+                    issue_date = visa_dic["date"]
+                    if datetime.date(year=issue_date[0:4] , month=issue_date[5:7] , day=issue_date[9:11]) <= datetime.datetime.now():
+                        print("accepted")
+            else:
+                if each_entry["entry_reason"] == ""
+                else:
+                    print("rejected")
+
+
+        i = i + 1
+entries.close()
+
+
+'''
+        list_first_name = []
+        list_last_name = []
+        list_passport = []
+
+        each_entry_first_name = each_entry["first_name"]
+        each_entry_last_name = each_entry["last_name"]
+        each_entry_passport = each_entry["passport"]
+
+        list_first_name.append(each_entry_first_name)
+        list_last_name.append(each_entry_last_name)
+        list_passport.append(each_entry_passport)
+
+        i = i + 1
+    '''
 
 
 
