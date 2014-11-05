@@ -93,37 +93,60 @@ elif each_test_watchlist_contents['first_name'] in watchlist_first_name:
 else:
     print("not in watchlist")
 
-#check all the returning cases
+# sort out all the countries with specific requirements
+
 visit_visa_list=[]
+
+transit_visa_list=[]
+
+medical_advisory_list=[]
+
 with open("example_entries.json","r")as entries:
     entries_content = entries.read()
     entries_content_list = json.loads(entries_content)
     #trying to get json file into python format data, for example a list instead of a pile of strings
     each_entry = {}
 
-    #check all the returning cases
+
     while i < len(entries_content_list):
         each_entry = entries_content_list[i]
+        #check all the medical advisory cases
+        from_dic = each_entry["from"]
+        if from_dic["country"] in medical_advisory_list:
+            print("quarantine")
+            via_dic = each_entry["via"]
+            if via_dic["country"] in medical_advisory_list:
+                print("quarantine")
+            #check all the returning cases
+            elif each_entry["entry_reason"] == "returning":
+                home_dic=each_entry["home"]
+                if home_dic["country"] == "KAN":
+                    print("accepted")
 
-        if each_entry["entry_reason"] == "returning":
-            home_dic=each_entry["home"]
-            if home_dic["country"] == "KAN":
-                print("accepted")
-        else:
-            if each_entry["entry_reason"] == "visit":
-                from_dic=each_entry["from"]
-                if from_dic["country"] in visit_visa_list:
-                    #still don't know how to deal with cases where there is no visa
-                    visa_dic = each_entry["visa"]
-                    issue_date = visa_dic["date"]
-                    if datetime.date(year=issue_date[0:4] , month=issue_date[5:7] , day=issue_date[9:11]) <= datetime.datetime.now():
-                        print("accepted")
-            else:
-                if each_entry["entry_reason"] == ""
-                else:
-                    print("rejected")
-
-
+                #check all the visiting cases
+                elif each_entry["entry_reason"] == "visit":
+                    from_dic=each_entry["from"]
+                    if from_dic["country"] in visit_visa_list:
+                        #still don't know how to deal with cases where there is no visa
+                        #need to check under whether a visit visa is required
+                        visa_dic = each_entry["visa"]
+                        issue_date = visa_dic["date"]
+                        today = datetime.date.today()
+                        margin = datetime.timedelta(days=730)
+                        if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
+                            print("accepted")
+                        #check all the transiting cases
+                        elif each_entry["entry_reason"] == "transit":
+                            from_dic = each_entry["from"]
+                            if from_dic["country"] in transit_visa_list:
+                                visa_dic = each_entry["visa"]
+                                issue_date = visa_dic["date"]
+                                today = datetime.date.today()
+                                margin = datetime.timedelta(days=730)
+                                if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
+                                    print("accepted")
+                                else:
+                                    print("rejected")
         i = i + 1
 entries.close()
 
