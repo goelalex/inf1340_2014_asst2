@@ -15,6 +15,12 @@ import re
 import datetime
 import json
 
+#open all the files and save the data structures
+with open("example_entries.json", "r") as file_reader:
+    file_contents = file_reader.readlines()
+    print(len(file_contents))
+print(file_contents)
+
 
 with open("countries.json","r") as countries_reader:
     countries_file = countries_reader.readlines()
@@ -77,6 +83,7 @@ def decide(input_file, watchlist_file, countries_file):
 
 
     return ["Reject"]
+<<<<<<< HEAD
 
 
 def valid_passport_format(passport_number):
@@ -85,6 +92,21 @@ def valid_passport_format(passport_number):
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
     """
+=======
+
+#going to need to refer to the country file
+#for loop for every user which checks all the criteria and decides whether or not they reject or accept
+#make helper functions
+#append to a list
+#return a list of rejected people (above)
+#find a way to nicely code the conditions
+
+#Book an appointment with Sasa
+
+
+def valid_passport_format(passport_number):
+
+>>>>>>> FETCH_HEAD
     passport_format = re.compile('.{5}-.{5}-.{5}-.{5}-.{5}')
 
     if passport_format.match(passport_number):
@@ -94,6 +116,7 @@ def valid_passport_format(passport_number):
 
 
 def valid_date_format(date_string):
+
     """
     Checks whether a date has the format YYYY-mm-dd in numbers
     :param date_string: date to be checked
@@ -103,5 +126,9 @@ def valid_date_format(date_string):
         datetime.datetime.strptime(date_string, '%Y-%m-%d')
         return True
     except ValueError:
+<<<<<<< HEAD
         return False
 
+=======
+        return False
+>>>>>>> FETCH_HEAD
