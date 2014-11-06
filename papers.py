@@ -76,6 +76,10 @@ def entry(person):
         else:
             return ["Reject"]
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
 def visa_transit(person, country):
     if person["entry_reason"] == "transit":
         visitor_home_country = person["region"]["country"]
@@ -88,7 +92,7 @@ def visa_transit(person, country):
                 return False
     return True
 
-"""
+
 def visa_requirement(person, country):
     visitor_home_country = person["region"]["country"]
     transit_visa_required = country[visitor_home_country]["visa_transit_required"]
@@ -103,7 +107,7 @@ def visa_requirement(person, country):
         return "visitor"
     else:
         return False
-"""
+
 
 def visa_visitor(person, country):
     if person["entry_reason"] == "visit":
@@ -140,12 +144,15 @@ def quanrantine(person, country, quarantine):
                         print("accepted")
 
 
+<<<<<<< HEAD
 def visa_visitor
 
 
 def quanrantine
 
 
+=======
+>>>>>>> FETCH_HEAD
 
 def decide(input_file, watchlist_file, countries_file):
     """
@@ -237,8 +244,11 @@ def decide(input_file, watchlist_file, countries_file):
     countries.close()
 
     #starting by sorting out those with visit visa requirement
+<<<<<<< HEAD
 
     visit_visa_list = []
+=======
+>>>>>>> FETCH_HEAD
     with open("countries.json", "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
@@ -251,6 +261,7 @@ def decide(input_file, watchlist_file, countries_file):
         if each_country_contents["visitor_visa_required"] == "1":
             visit_visa_list.append(each_country_contents["code"])
     countries.close()
+
 
     with open("example_entries.json","r")as entries:
         entries_content = entries.read()
