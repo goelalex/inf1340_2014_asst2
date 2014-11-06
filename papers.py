@@ -50,6 +50,7 @@ with open("countries.json","r") as countries_reader:
 #def transit visa - date compare - same to transit
 #def is the person a real person for the required sections
 #use input_file as a variable -- it'll read as whatever we gave -- it is given in the test
+'''
 def entry(person):
     elif each_entry["entry_reason"] == "visit":
     from_dic = each_entry["from"]
@@ -75,6 +76,7 @@ def entry(person):
         else:
             return ["Reject"]
 
+'''
 def visa_transit(person, country):
     if person["reason"] == "transit":
         visitor_home_country = person["region"]["country"]
@@ -104,6 +106,7 @@ def visa_requirement(person, country):
     else:
         return False
 """
+
 
 def visa_visitor(person, country):
     if person["reason"] == "visitor":
@@ -138,6 +141,14 @@ def quanrantine(person, country, quarantine):
                     home_dic=each_entry["home"]
                     if home_dic["country"] == "KAN":
                         print("accepted")
+'''
+
+def visa_visitor
+d
+
+def quanrantine
+
+'''
 
 def decide(input_file, watchlist_file, countries_file):
     """
@@ -196,11 +207,24 @@ def decide(input_file, watchlist_file, countries_file):
 
     # sort out all the countries with specific requirements
 
-    visit_visa_list=[]
+    visit_visa_list = []
+    transit_visa_list = []
+    medical_advisory_list =[ ]
 
-    transit_visa_list=[]
+    #starting by sorting out those with visit visa requirement
 
-    medical_advisory_list=[]
+    with open("countries.json" , "r") as countries:
+        countries_contents = countries.read()
+        countries_contents_dic = json.loads(countries_contents)
+        countries_codes_list = list(countries_contents_dic.keys())
+        print(type(countries_codes_list))
+    while i < len(countries_codes_list):
+        each_country_code = countries_codes_list[i]
+        each_country_contents = countries_contents_dic[countries_codes_list[i]]
+        i = i + 1
+        if each_country_contents["visitor_visa_required"] == "1":
+            visit_visa_list.append(each_country_contents["code"])
+    countries.close()
 
     with open("example_entries.json","r")as entries:
         entries_content = entries.read()
@@ -272,12 +296,8 @@ def decide(input_file, watchlist_file, countries_file):
     #all your code should be in here
     #need series of if-else statements
 
-def valid_passport_format(passport_number):
-    """
-        Checks whether a passport number is five sets of five alpha-number characters separated by dashes
-        :param passport_number: alpha-numeric string
-        :return: Boolean; True if the format is valid, False otherwise
-    """
+
+
 
 
 
@@ -296,16 +316,13 @@ def valid_passport_format(passport_number):
 #https://docs.python.org/2/library/re.html#checking-for-a-pair
 
 def valid_passport_format(passport_number):
-#write functions for each task: Quarantine, medical advisory,
-
-
-#if len medical advisory > 0 then the person is quarantine for both country or purpose -- don't need an else because goes to false if it fails
-
-    # :rtype : object
-
-
+    """
+    Checks whether a pasport number is five sets of five alpha-number characters separated by dashes
+    :param passport_number: alpha-numeric string
+    :return: Boolean; True if the format is valid, False otherwise
+    """
     passport_format = re.compile('.{5}-.{5}-.{5}-.{5}-.{5}')
-    valid_passport_format(passport_format.passport_number('.{5}-.{5}-.{5}-.{5}-.{5}'))
+
     if passport_format.match(passport_number):
         return True
     else:
