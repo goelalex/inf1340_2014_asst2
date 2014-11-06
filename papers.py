@@ -18,13 +18,12 @@ import json
 
 def watch_list(input_file, watchlist_file):
     i = 0
-    #each_watchlist = {}
-    with open("test_watchlist.json","r") as test_watchlist:
+    with open("input_file", "r") as test_watchlist:
         test_watchlist_contents = test_watchlist.read()
         test_watchlist_contents_list = json.loads(test_watchlist_contents)
         each_test_watchlist_contents = test_watchlist_contents_list[0]
     test_watchlist.close()
-    with open("watchlist.json","r") as watchlist:
+    with open("watchlist_file","r") as watchlist:
         watchlist_contents = watchlist.read()
         watchlist_contents_list = json.loads(watchlist_contents)
         watchlist_first_name = []
@@ -46,10 +45,10 @@ def watch_list(input_file, watchlist_file):
         return None
 
 
-def medical_advisory(input_file,countries_file):
+def medical_advisory(input_file, countries_file):
     i = 0
-    medical_advisory_list =[]
-    with open("countries.json", "r") as countries:
+    medical_advisory_list = []
+    with open("countries_file", "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
@@ -60,10 +59,9 @@ def medical_advisory(input_file,countries_file):
         if each_country_contents["medical_advisory"] != "":
             medical_advisory_list.append(each_country_contents["code"])
     countries.close()
-    with open("example_entries.json","r")as entries:
+    with open("input_file","r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
-
     entries.close()
     while i < len(entries_content_list):
             each_entry = entries_content_list[i]
@@ -99,7 +97,7 @@ def returning_residents(input_file,countries_file):
 def visit_visa(input_file, countries_file):
     i = 0
     visit_visa_list = []
-    with open("countries.json" , "r") as countries:
+    with open("countries_file" , "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
@@ -111,7 +109,7 @@ def visit_visa(input_file, countries_file):
         if each_country_contents["visitor_visa_required"] == "1":
             visit_visa_list.append(each_country_contents["code"])
     countries.close()
-    with open("example_entries.json","r")as entries:
+    with open("input_file","r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
     while i < len(entries_content_list):
@@ -146,7 +144,7 @@ def transit_visa(input_file, countries_file):
         if each_country_contents["transit_visa"] == "1":
             transit_visa_list.append(each_country_contents["code"])
     countries.close()
-    with open("example_entries.json","r")as entries:
+    with open("input_file","r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
         while i < len(entries_content_list):
@@ -173,12 +171,16 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
+
+
+
+
     return ["Reject"]
 
 
 def valid_passport_format(passport_number):
     """
-    Checks whether a pasport number is five sets of five alpha-number characters separated by dashes
+    Checks whether a passport number is five sets of five alpha-number characters separated by dashes
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
     """
