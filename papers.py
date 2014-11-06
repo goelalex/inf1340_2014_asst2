@@ -96,6 +96,7 @@ def returning_residents(input_file,countries_file):
 
 def visit_visa(input_file, countries_file):
     i = 0
+    #starting by sorting out those with visit visa requirement
     visit_visa_list = []
     with open("countries_file" , "r") as countries:
         countries_contents = countries.read()
@@ -162,6 +163,24 @@ def transit_visa(input_file, countries_file):
                         return ["Reject"]
 
 
+def check_letter_case():
+    i = 0
+    with open("input_file.json","r")as entries:
+        entries_content = entries.read()
+        entries_content_list = json.loads(entries_content)
+        each_entry = {}
+        while i < len(entries_content_list):
+            each_entry = entries_content_list[i]
+            i += 1
+    with open("input_file","r")as entries:
+        entries_content = entries.read()
+        entries_content_list = json.loads(entries_content)
+    if "passport".islower() is True:
+        "passport".upper()
+    else:
+        return None
+
+
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted
@@ -171,8 +190,6 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
-
-
 
 
     return ["Reject"]
