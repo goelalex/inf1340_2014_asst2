@@ -76,6 +76,17 @@ def entry(person):
         else:
             return ["Reject"]
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+>>>>>>> FETCH_HEAD
+=======
+'''
+>>>>>>> parent of f46d166... deleted undefined functions
+>>>>>>> FETCH_HEAD
 def visa_transit(person, country):
     if person["entry_reason"] == "transit":
         visitor_home_country = person["region"]["country"]
@@ -139,6 +150,12 @@ def quanrantine(person, country, quarantine):
                     if home_dic["country"] == "KAN":
                         print("accepted")
 
+def visa_visitor
+d
+
+def quanrantine
+
+'''
 
 def visa_visitor
 
@@ -237,9 +254,18 @@ def decide(input_file, watchlist_file, countries_file):
     countries.close()
 
     #starting by sorting out those with visit visa requirement
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> FETCH_HEAD
 
     visit_visa_list = []
     with open("countries.json", "r") as countries:
+=======
+
+    with open("countries.json" , "r") as countries:
+>>>>>>> parent of f46d166... deleted undefined functions
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
