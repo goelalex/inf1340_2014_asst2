@@ -34,6 +34,7 @@ def watch_list(input_file, watchlist_file):
             watchlist_first_name .append(each_watchlist_first_name)
             each_watchlist_passport = each_watchlist["passport"]
             watchlist_passport .append(each_watchlist_passport)
+            check_letter_case(watchlist_passport)
             i += 1
     watchlist.close()
 
@@ -150,6 +151,7 @@ def transit_visa(input_file, countries_file):
         entries_content_list = json.loads(entries_content)
         while i < len(entries_content_list):
             each_entry = entries_content_list[i]
+            check_letter_case(each_entry)
             if each_entry["entry_reason"] == "transit":
                 from_dic = each_entry["from"]
                 if from_dic["country"] in transit_visa_list:
@@ -163,20 +165,9 @@ def transit_visa(input_file, countries_file):
                         return ["Reject"]
 
 
-def check_letter_case():
-    i = 0
-    with open("input_file.json","r")as entries:
-        entries_content = entries.read()
-        entries_content_list = json.loads(entries_content)
-        each_entry = {}
-        while i < len(entries_content_list):
-            each_entry = entries_content_list[i]
-            i += 1
-    with open("input_file","r")as entries:
-        entries_content = entries.read()
-        entries_content_list = json.loads(entries_content)
-    if "passport".islower() is True:
-        "passport".upper()
+def check_letter_case(string_check):
+    if string_check.islower() is True:
+        string_check.upper()
     else:
         return None
 
@@ -190,6 +181,11 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
+    watch_list()
+    medical_advisory()
+    returning_residents()
+    visit_visa()
+    transit_visa()
 
 
     return ["Reject"]
