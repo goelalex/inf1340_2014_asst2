@@ -132,7 +132,7 @@ def visit_visa(input_file, countries_file):
 def transit_visa(input_file, countries_file):
     i = 0
     transit_visa_list = []
-    with open("countries.json", "r") as countries:
+    with open("countries_file", "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
