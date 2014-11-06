@@ -14,6 +14,7 @@ __status__ = "Prototype"
 import re
 import datetime
 import json
+
 '''
 with open("example_entries.json", "r") as file_reader:
     file_contents = file_reader.readlines()
@@ -21,6 +22,8 @@ with open("example_entries.json", "r") as file_reader:
 
 
 #open all the files and save the data structures
+
+#this needs to be in the decide the function b/c test cases should be in decide
 with open("example_entries.json", "r") as file_reader:
     file_contents = file_reader.readlines()
     print(len(file_contents))
@@ -32,11 +35,42 @@ with open("countries.json","r") as countries_reader:
     countries_file = countries_reader.readlines()
     countries_reader.close()
 
-
-
-
-
+    while i < len(input_file_list):
+        each_entry = input_file_list[i]
+        each_entry_total
+        print(each_entry))
 '''
+
+#json files are being called in the the test function so they are not hardcoded
+#Make input_file function
+#Make a Countries function
+#Make decide function accomplish the goals of the test
+#def quarantine
+#def visitor visa - date compare
+#def transit visa - date compare - same to transit
+#def is the person a real person for the required sections
+#use input_file as a variable -- it'll read as whatever we gave -- it is given in the test
+def entry
+
+
+def visa_transit(person, country):
+    if person["reason"] == "transit":
+        home_country = person["region"]["country"]
+        if country[home_country]["visa_transit_required"]:
+            visa_date = person["visa"]["date"]
+            #need to define today
+            if visa_date.date() > today:
+                return True
+            else:
+                return False
+    return True
+
+
+def visa_visitor
+
+
+def quanrantine
+
 
 def decide(input_file, watchlist_file, countries_file):
     """
@@ -49,106 +83,107 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
 
-#check whether the entry is in the watch_list
-#first try to get names and passport number to be checked
-i = 0
-each_watchlist = {}
+    #check whether the entry is in the watch_list
+    #first try to get names and passport number to be checked
+    i = 0
+    each_watchlist = {}
 
-with open("test_watchlist.json","r") as test_watchlist:
-    # I am putting test_watchlist.json here to check whether the codes run.
-    # When put into use,it should be replaced by parameter watchlist_file.
-    test_watchlist_contents = test_watchlist.read()
-    test_watchlist_contents_list = json.loads(test_watchlist_contents)
-    #this get the entry to be tested as a list with only one element, which means one entry
-    each_test_watchlist_contents = test_watchlist_contents_list[0]
-    #this line get the element out as a dictionary
-test_watchlist.close()
+    with open("test_watchlist.json","r") as test_watchlist:
+        # I am putting test_watchlist.json here to check whether the codes run.
+        # When put into use,it should be replaced by parameter watchlist_file.
+        test_watchlist_contents = test_watchlist.read()
+        test_watchlist_contents_list = json.loads(test_watchlist_contents)
+        #this get the entry to be tested as a list with only one element, which means one entry
+        each_test_watchlist_contents = test_watchlist_contents_list[0]
+        #this line get the element out as a dictionary
+    test_watchlist.close()
 
-#second build a check pool according to watchlist json file
-with open("watchlist.json","r") as watchlist:
-    watchlist_contents = watchlist.read()
-    watchlist_contents_list = json.loads(watchlist_contents)
+    #second build a check pool according to watchlist json file
+    with open("watchlist.json","r") as watchlist:
+        watchlist_contents = watchlist.read()
+        watchlist_contents_list = json.loads(watchlist_contents)
 
-    #introduce these variables I need to use later
-    watchlist_first_name = []
-    watchlist_passport = []
+        #introduce these variables I need to use later
+        watchlist_first_name = []
+        watchlist_passport = []
 
-    #building a check pool by piling up all the first names and passport numbers
-    while i < len(watchlist_contents_list):
-        each_watchlist = watchlist_contents_list[i]
-        each_watchlist_first_name = each_watchlist["first_name"]
-        watchlist_first_name .append(each_watchlist_first_name)
-        each_watchlist_passport = each_watchlist["passport"]
-        watchlist_passport .append(each_watchlist_passport)
-        i = i + 1
-watchlist.close()
+        #building a check pool by piling up all the first names and passport numbers
+        while i < len(watchlist_contents_list):
+            each_watchlist = watchlist_contents_list[i]
+            each_watchlist_first_name = each_watchlist["first_name"]
+            watchlist_first_name .append(each_watchlist_first_name)
+            each_watchlist_passport = each_watchlist["passport"]
+            watchlist_passport .append(each_watchlist_passport)
+            i = i + 1
+    watchlist.close()
 
-#check whether the test entry falls in the check pool
-if each_test_watchlist_contents['passport'] in watchlist_passport:
-    print("Secondary")
+    #check whether the test entry falls in the check pool
+    if each_test_watchlist_contents['passport'] in watchlist_passport:
+        print("Secondary")
 
-elif each_test_watchlist_contents['first_name'] in watchlist_first_name:
-    print("Secondary")
+    elif each_test_watchlist_contents['first_name'] in watchlist_first_name:
+        print("Secondary")
 
-else:
-    print("not in watchlist")
+    else:
+        print("not in watchlist")
 
-# sort out all the countries with specific requirements
+    # sort out all the countries with specific requirements
 
-visit_visa_list=[]
+    visit_visa_list=[]
 
-transit_visa_list=[]
+    transit_visa_list=[]
 
-medical_advisory_list=[]
+    medical_advisory_list=[]
 
-with open("example_entries.json","r")as entries:
-    entries_content = entries.read()
-    entries_content_list = json.loads(entries_content)
-    #trying to get json file into python format data, for example a list instead of a pile of strings
-    each_entry = {}
+    with open("example_entries.json","r")as entries:
+        entries_content = entries.read()
+        entries_content_list = json.loads(entries_content)
+        #trying to get json file into python format data, for example a list instead of a pile of strings
+        each_entry = {}
 
 
-    while i < len(entries_content_list):
-        each_entry = entries_content_list[i]
-        #check all the medical advisory cases
-        from_dic = each_entry["from"]
-        if from_dic["country"] in medical_advisory_list:
-            print("quarantine")
-            via_dic = each_entry["via"]
-            if via_dic["country"] in medical_advisory_list:
+        while i < len(entries_content_list):
+            each_entry = entries_content_list[i]
+            #check all the medical advisory cases
+            from_dic = each_entry["from"]
+            if from_dic["country"] in medical_advisory_list:
                 print("quarantine")
-            #check all the returning cases
-            elif each_entry["entry_reason"] == "returning":
-                home_dic=each_entry["home"]
-                if home_dic["country"] == "KAN":
-                    print("accepted")
+                via_dic = each_entry["via"]
+                if via_dic["country"] in medical_advisory_list:
+                    print("quarantine")
+                #check all the returning cases
+                elif each_entry["entry_reason"] == "returning":
+                    home_dic=each_entry["home"]
+                    if home_dic["country"] == "KAN":
+                        print("accepted")
 
-                #check all the visiting cases
-                elif each_entry["entry_reason"] == "visit":
-                    from_dic=each_entry["from"]
-                    if from_dic["country"] in visit_visa_list:
-                        #still don't know how to deal with cases where there is no visa
-                        #need to check under whether a visit visa is required
-                        visa_dic = each_entry["visa"]
-                        issue_date = visa_dic["date"]
-                        today = datetime.date.today()
-                        margin = datetime.timedelta(days=730)
-                        if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
-                            print("accepted")
-                        #check all the transiting cases
-                        elif each_entry["entry_reason"] == "transit":
-                            from_dic = each_entry["from"]
-                            if from_dic["country"] in transit_visa_list:
-                                visa_dic = each_entry["visa"]
-                                issue_date = visa_dic["date"]
-                                today = datetime.date.today()
-                                margin = datetime.timedelta(days=730)
-                                if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
-                                    print("accepted")
-                                else:
-                                    print("rejected")
-        i = i + 1
-entries.close()
+                    #check all the visiting cases
+                    elif each_entry["entry_reason"] == "visit":
+                        from_dic=each_entry["from"]
+                        if from_dic["country"] in visit_visa_list:
+                            #still don't know how to deal with cases where there is no visa
+                            #need to check under whether a visit visa is required
+                            visa_dic = each_entry["visa"]
+                            issue_date = visa_dic["date"]
+                            today = datetime.date.today()
+                            margin = datetime.timedelta(days=730)
+                            if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
+                                print("accepted")
+                            #check all the transiting cases
+                            elif each_entry["entry_reason"] == "transit":
+                                from_dic = each_entry["from"]
+                                if from_dic["country"] in transit_visa_list:
+                                    visa_dic = each_entry["visa"]
+                                    issue_date = visa_dic["date"]
+                                    today = datetime.date.today()
+                                    margin = datetime.timedelta(days=730)
+                                    if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
+                                        print("accepted")
+                                    else:
+                                        print("rejected")
+            i = i + 1
+    entries.close()
+    return ["Reject"]
 
 
 '''
@@ -167,20 +202,16 @@ entries.close()
         i = i + 1
     '''
 
-
-
-
-'''
-
-    return ["Reject"]
-
+    #all your code should be in here
+    #need series of if-else statements
 
 def valid_passport_format(passport_number):
     """
-    Checks whether a passport number is five sets of five alpha-number characters separated by dashes
-    :param passport_number: alpha-numeric string
-    :return: Boolean; True if the format is valid, False otherwise
+        Checks whether a passport number is five sets of five alpha-number characters separated by dashes
+        :param passport_number: alpha-numeric string
+        :return: Boolean; True if the format is valid, False otherwise
     """
+
 
 
 #going to need to refer to the country file
@@ -194,31 +225,102 @@ def valid_passport_format(passport_number):
 
 
 
+#Should we have a helped function?
+#https://docs.python.org/2/library/re.html#checking-for-a-pair
+
 def valid_passport_format(passport_number):
+#write functions for each task: Quarantine, medical advisory,
+
+
+#if len medical advisory > 0 then the person is quarantine for both country or purpose -- don't need an else because goes to false if it fails
+
+    # :rtype : object
 
 
     passport_format = re.compile('.{5}-.{5}-.{5}-.{5}-.{5}')
-
+    valid_passport_format(passport_format.passport_number('.{5}-.{5}-.{5}-.{5}-.{5}'))
     if passport_format.match(passport_number):
         return True
     else:
         return False
 
+    #open test files and then index and append the lists to make a new list to check if those items are valid
+"""
+    with open("test_returning_citizen.json","r")as test_returning_citizen_reader:
+        test_returning_citizen_file = test_returning_citizen_reader.read('passport')
+        test_returning_citizen_file_list = json.loads(input_file)
+        for passport in range(str()):
+            passport_number = {}
+            passport['passport'] = test_returning_citizen_file.read('passport')
+            passport_number.append(test_returning_citizen_reader())
+           #not sure if supposed to be reading passport numbers or format...
+            #passprt_number['passport'] = passport_number
+            #for passport in range(str())
+        print('passport')
+
+
+    with open("test_quarantine.json","r")as test_quarantine_reader:
+        test_quarantine_file = test_quarantine_reader.read('passport')
+        test_quarantine_file_list = json.loads(input_file)
+        #need to open the files
+        print('passport')
+
+
+    with open("test_watchlist.json","r")as test_watchlist_reader:
+        test_watchlist_file = test_watchlist_reader.read('passport')
+        test_watchlist_file_list = json.loads(input_file)
+
+        print('passport')
+
+
+        valid_passport_format(passport_format.passport_number('.{5}-.{5}-.{5}-.{5}-.{5}'))  # Valid.
+        valid_passport_format(passport_format.passport_number('.{5}-.{4}-.{5}-.{5}-.{5}'))  # Invalid.
+        valid_passport_format(passport_format.passport_number('.{4}-.{5}-.{5}-.{5}-.{5}'))  # Invalid.
+
+
+        passport_format.match('.{5}-.{5}-.{5}-.{5}-.{5}').group(1)
+"""
 
 def valid_date_format(date_string):
 
-    """
+    '''
     Checks whether a date has the format YYYY-mm-dd in numbers
     :param date_string: date to be checked
     :return: Boolean True if the format is valid, False otherwise
-    """
+'''
     try:
         datetime.datetime.strptime(date_string, '%Y-%m-%d')
+        valid_date_format(datetime)
         return True
     except ValueError:
 
         return False
-'''
+
+"""
+#open test files and then index and append the lists to make a new list to check if those items are valid
+
+with open("test_returning_citizen.json","r")as test_returning_citizen_reader:
+        test_returning_citizen_file = test_returning_citizen_reader.read('date')
+        test_returning_citizen_file_list = json.loads(input_file)
+    print('date')
 
 
+with open("test_quarantine.json","r")as test_quarantine_reader:
+        test_quarantine_file = test_quarantine_reader.read('date')
+        test_quarantine_file_list = json.loads(input_file)
+        #need to open the files
+        print('date')
 
+
+    with open("test_watchlist.json","r")as test_watchlist_reader:
+        test_watchlist_file = test_watchlist_reader.read('date')
+        test_watchlist_file_list = json.loads(input_file)
+        print('date')
+
+        valid_date_format( ('YYYY-mm-dd'))  # Valid.
+        valid_date_format(date_string('YYY-m-ddd'))  # Invalid.
+        valid_date_format(date_string('Y-mmm-dd'))  # Invalid.
+
+
+        passport_format.match('.{5}-.{5}-.{5}-.{5}-.{5}').group(1)
+"""
