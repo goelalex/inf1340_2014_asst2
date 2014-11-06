@@ -209,8 +209,33 @@ def decide(input_file, watchlist_file, countries_file):
 
     visit_visa_list = []
     transit_visa_list = []
-    medical_advisory_list =[ ]
-
+    with open("countries.json", "r") as countries:
+        countries_contents = countries.read()
+        countries_contents_dic = json.loads(countries_contents)
+        countries_codes_list = list(countries_contents_dic.keys())
+        print(type(countries_codes_list))
+    while i < len(countries_codes_list):
+        each_country_code = countries_codes_list[i]
+        each_country_contents = countries_contents_dic[countries_codes_list[i]]
+        i = i + 1
+        if each_country_contents["transit_visa"] == "1":
+            transit_visa_list.append(each_country_contents["code"])
+    countries.close()
+    medical_advisory_list =[]
+    #Medical Advisory list
+    with open("countries.json", "r") as countries:
+        countries_contents = countries.read()
+        countries_contents_dic = json.loads(countries_contents)
+        countries_codes_list = list(countries_contents_dic.keys())
+        print(type(countries_codes_list))
+    while i < len(countries_codes_list):
+        each_country_code = countries_codes_list[i]
+        each_country_contents = countries_contents_dic[countries_codes_list[i]]
+        i = i + 1
+        if each_country_contents["medical_advisory"] != "":
+            medical_advisory_list.append(each_country_contents["code"])
+    countries.close()
+    
     #starting by sorting out those with visit visa requirement
 
     with open("countries.json" , "r") as countries:
