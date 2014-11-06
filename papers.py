@@ -50,27 +50,94 @@ with open("countries.json","r") as countries_reader:
 #def transit visa - date compare - same to transit
 #def is the person a real person for the required sections
 #use input_file as a variable -- it'll read as whatever we gave -- it is given in the test
-def entry
-
+def entry(person):
+    elif each_entry["entry_reason"] == "visit":
+    from_dic = each_entry["from"]
+    if from_dic["country"] in visit_visa_list:
+    #still don't know how to deal with cases where there is no visa
+    #need to check under whether a visit visa is required
+        visa_dic = each_entry["visa"]
+        issue_date = visa_dic["date"]
+        today = datetime.date.today()
+        margin = datetime.timedelta(days=730)
+        if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
+        print("accepted")
+        #check all the transiting cases
+        elif each_entry["entry_reason"] == "transit":
+            from_dic = each_entry["from"]
+        if from_dic["country"] in transit_visa_list:
+            visa_dic = each_entry["visa"]
+            issue_date = visa_dic["date"]
+            today = datetime.date.today()
+            margin = datetime.timedelta(days=730)
+        if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
+            return ["Accept"]
+        else:
+            return ["Reject"]
 
 def visa_transit(person, country):
     if person["reason"] == "transit":
-        home_country = person["region"]["country"]
-        if country[home_country]["visa_transit_required"]:
+        visitor_home_country = person["region"]["country"]
+        if country[visitor_home_country]["visa_transit_required"]:
             visa_date = person["visa"]["date"]
             #need to define today
-            if visa_date.date() > today:
+            today = datetime.date.today(2014, 11, 5, 00)
+            if visa_date.date() <= today:
                 return True
             else:
                 return False
     return True
 
+"""
+def visa_requirement(person, country):
+    visitor_home_country = person["region"]["country"]
+    transit_visa_required = country[visitor_home_country]["visa_transit_required"]
+    visitor_visa_required = country[visitor_home_country]["visa_visitor_required"]
+    if transit_visa_required == False and visitor_visa_required == False:
+        return "none"
+    elif transit_visa_required == True and visitor_visa_required == True:
+        return "both"
+    elif transit_visa_required == True and visitor_visa_required == False:
+        return "transit"
+    elif not transit_visa_required and visitor_visa_required == True:
+        return "visitor"
+    else:
+        return False
+"""
 
-def visa_visitor
+def visa_visitor(person, country):
+    if person["reason"] == "visitor":
+        home = person["region"]["country"]
+        if country[home]["visa_visitor_required"]:
+            visa_date = person["visa"]["date"]
+            today = datetime.date.today(2014, 11, 5, 00)
+            if visa_date.date() <= today:
+                return True
+            else:
+                return False
+    return True
 
-
-def quanrantine
-
+def quanrantine(person, country, quarantine):
+    with open("example_entries.json","r")as entries:
+        entries_content = entries.read()
+        entries_content_list = json.loads(entries_content)
+        #trying to get json file into python format data, for example a list instead of a pile of strings
+        each_entry = {}
+        while i < len(entries_content_list):
+            each_entry = entries_content_list[i]
+            #check all the medical advisory cases
+            from_dic = each_entry["from"]
+            if from_dic["country"] in medical_advisory_list:
+                print("quarantine")
+                via_dic = each_entry["via"]
+                if via_dic["country"] in medical_advisory_list:
+                   #shouldn't we be returning fals here !!!
+                    print("quarantine")
+                #check all the returning cases
+                elif each_entry["entry_reason"] == "returning":
+                    home_dic=each_entry["home"]
+                    if home_dic["country"] == "KAN":
+                        print("accepted")
 
 def decide(input_file, watchlist_file, countries_file):
     """
