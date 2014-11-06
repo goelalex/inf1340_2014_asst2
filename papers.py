@@ -50,7 +50,7 @@ with open("countries.json","r") as countries_reader:
 #def transit visa - date compare - same to transit
 #def is the person a real person for the required sections
 #use input_file as a variable -- it'll read as whatever we gave -- it is given in the test
-'''
+
 def entry(person):
     elif each_entry["entry_reason"] == "visit":
     from_dic = each_entry["from"]
@@ -76,14 +76,12 @@ def entry(person):
         else:
             return ["Reject"]
 
-'''
 def visa_transit(person, country):
-    if person["reason"] == "transit":
+    if person["entry_reason"] == "transit":
         visitor_home_country = person["region"]["country"]
         if country[visitor_home_country]["visa_transit_required"]:
             visa_date = person["visa"]["date"]
-            #need to define today
-            today = datetime.date.today(2014, 11, 5, 00)
+            today = datetime.date.today(14, 11, 5, 00)
             if visa_date.date() <= today:
                 return True
             else:
@@ -107,9 +105,8 @@ def visa_requirement(person, country):
         return False
 """
 
-
 def visa_visitor(person, country):
-    if person["reason"] == "visitor":
+    if person["entry_reason"] == "visit":
         home = person["region"]["country"]
         if country[home]["visa_visitor_required"]:
             visa_date = person["visa"]["date"]
@@ -141,14 +138,14 @@ def quanrantine(person, country, quarantine):
                     home_dic=each_entry["home"]
                     if home_dic["country"] == "KAN":
                         print("accepted")
-'''
+
 
 def visa_visitor
-d
+
 
 def quanrantine
 
-'''
+
 
 def decide(input_file, watchlist_file, countries_file):
     """
@@ -207,13 +204,42 @@ def decide(input_file, watchlist_file, countries_file):
 
     # sort out all the countries with specific requirements
 
-    visit_visa_list = []
+
+
     transit_visa_list = []
+
+    with open("countries.json", "r") as countries:
+        countries_contents = countries.read()
+        countries_contents_dic = json.loads(countries_contents)
+        countries_codes_list = list(countries_contents_dic.keys())
+        print(type(countries_codes_list))
+    while i < len(countries_codes_list):
+        each_country_code = countries_codes_list[i]
+        each_country_contents = countries_contents_dic[countries_codes_list[i]]
+        i = i + 1
+        if each_country_contents["transit_visa"] == "1":
+            transit_visa_list.append(each_country_contents["code"])
+    countries.close()
+
     medical_advisory_list =[ ]
+    #Medical Advisory list
+    with open("countries.json", "r") as countries:
+        countries_contents = countries.read()
+        countries_contents_dic = json.loads(countries_contents)
+        countries_codes_list = list(countries_contents_dic.keys())
+        print(type(countries_codes_list))
+    while i < len(countries_codes_list):
+        each_country_code = countries_codes_list[i]
+        each_country_contents = countries_contents_dic[countries_codes_list[i]]
+        i = i + 1
+        if each_country_contents["medical_advisory"] != "":
+            medical_advisory_list.append(each_country_contents["code"])
+    countries.close()
 
     #starting by sorting out those with visit visa requirement
 
-    with open("countries.json" , "r") as countries:
+    visit_visa_list = []
+    with open("countries.json", "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
