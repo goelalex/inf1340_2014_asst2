@@ -77,9 +77,13 @@ def entry(person):
             return ["Reject"]
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> FETCH_HEAD
+=======
+'''
+>>>>>>> parent of f46d166... deleted undefined functions
 def visa_transit(person, country):
     if person["entry_reason"] == "transit":
         visitor_home_country = person["region"]["country"]
@@ -92,7 +96,7 @@ def visa_transit(person, country):
                 return False
     return True
 
-
+"""
 def visa_requirement(person, country):
     visitor_home_country = person["region"]["country"]
     transit_visa_required = country[visitor_home_country]["visa_transit_required"]
@@ -107,7 +111,7 @@ def visa_requirement(person, country):
         return "visitor"
     else:
         return False
-
+"""
 
 def visa_visitor(person, country):
     if person["entry_reason"] == "visit":
@@ -143,6 +147,12 @@ def quanrantine(person, country, quarantine):
                     if home_dic["country"] == "KAN":
                         print("accepted")
 
+def visa_visitor
+d
+
+def quanrantine
+
+'''
 
 <<<<<<< HEAD
 def visa_visitor
@@ -245,11 +255,16 @@ def decide(input_file, watchlist_file, countries_file):
 
     #starting by sorting out those with visit visa requirement
 <<<<<<< HEAD
+<<<<<<< HEAD
 
     visit_visa_list = []
 =======
 >>>>>>> FETCH_HEAD
     with open("countries.json", "r") as countries:
+=======
+
+    with open("countries.json" , "r") as countries:
+>>>>>>> parent of f46d166... deleted undefined functions
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
@@ -261,7 +276,6 @@ def decide(input_file, watchlist_file, countries_file):
         if each_country_contents["visitor_visa_required"] == "1":
             visit_visa_list.append(each_country_contents["code"])
     countries.close()
-
 
     with open("example_entries.json","r")as entries:
         entries_content = entries.read()
