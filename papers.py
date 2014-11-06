@@ -106,7 +106,7 @@ def visa_requirement(person, country):
     else:
         return False
 """
-
+'''
 
 def visa_visitor(person, country):
     if person["reason"] == "visitor":
@@ -141,12 +141,9 @@ def quanrantine(person, country, quarantine):
                     home_dic=each_entry["home"]
                     if home_dic["country"] == "KAN":
                         print("accepted")
-'''
 
-def visa_visitor
-d
 
-def quanrantine
+
 
 '''
 
@@ -207,7 +204,7 @@ def decide(input_file, watchlist_file, countries_file):
 
     # sort out all the countries with specific requirements
 
-    visit_visa_list = []
+
     transit_visa_list = []
     with open("countries.json", "r") as countries:
         countries_contents = countries.read()
@@ -237,7 +234,7 @@ def decide(input_file, watchlist_file, countries_file):
     countries.close()
     
     #starting by sorting out those with visit visa requirement
-
+    visit_visa_list = []
     with open("countries.json" , "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
