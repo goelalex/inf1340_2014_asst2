@@ -34,16 +34,15 @@ def watch_list(input_file, watchlist_file):
         watchlist_contents_list = json.loads(watchlist_contents)
         watchlist_first_name = []
         watchlist_passport = []
-        while i < len(watchlist_contents_list):
-            each_watchlist = watchlist_contents_list[i]
-            each_watchlist_first_name = each_watchlist["first_name"]
-            checked_each_watchlist_first_name = each_watchlist_first_name.upper()
-            watchlist_first_name .append(checked_each_watchlist_first_name)
-            each_watchlist_passport = each_watchlist["passport"]
-            checked_each_watchlist_passport = each_watchlist_passport.upper()
-            watchlist_passport .append(checked_each_watchlist_passport)
-
-            i += 1
+    while i < len(watchlist_contents_list):
+        each_watchlist = watchlist_contents_list[i]
+        each_watchlist_first_name = each_watchlist["first_name"]
+        checked_each_watchlist_first_name = each_watchlist_first_name.upper()
+        watchlist_first_name .append(checked_each_watchlist_first_name)
+        each_watchlist_passport = each_watchlist["passport"]
+        checked_each_watchlist_passport = each_watchlist_passport.upper()
+        watchlist_passport .append(checked_each_watchlist_passport)
+        i += 1
     watchlist.close()
 
     if each_test_watchlist_contents['passport'] in watchlist_passport:
@@ -75,6 +74,7 @@ def medical_advisory(input_file, countries_file):
         if each_country_contents["medical_advisory"] != "":
             medical_advisory_list.append(each_country_contents["code"])
     countries.close()
+
     with open("input_file","r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
@@ -104,13 +104,13 @@ def returning_residents(input_file,countries_file):
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
         each_entry = {}
-        while i < len(entries_content_list):
-            each_entry = entries_content_list[i]
-            i += 1
+    while i < len(entries_content_list):
+        each_entry = entries_content_list[i]
+        i += 1
         if each_entry["entry_reason"] == "returning":
             home_dic = each_entry["home"]
             if home_dic["country"] == "KAN":
-                print("Accept")
+                return ["Accept"]
             else:
                 return ["Reject"]
         else:
@@ -132,7 +132,6 @@ def visit_visa(input_file, countries_file):
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
-        print(type(countries_codes_list))
     while i < len(countries_codes_list):
         each_country_code = countries_codes_list[i]
         each_country_contents = countries_contents_dic[each_country_code]
@@ -140,6 +139,7 @@ def visit_visa(input_file, countries_file):
         if each_country_contents["visitor_visa_required"] == "1":
             visit_visa_list.append(each_country_contents["code"])
     countries.close()
+
     with open("input_file","r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
