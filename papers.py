@@ -166,8 +166,6 @@ def transit_visa(input_file, countries_file):
                         return ["Reject"]
 
 
-
-
 def decide(input_file, watchlist_file, countries_file):
     """
     Decides whether a traveller's entry into Kanadia should be accepted
@@ -178,19 +176,19 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
 
-    watch_list(input_file, watchlist_file)
-
-    medical_advisory(input_file, countries_file)
-
-    returning_residents(input_file,countries_file)
-
-    visit_visa(input_file, countries_file)
-
-    transit_visa(input_file, countries_file)
-
-
-
-    return ["Reject"]
+    #Ask Sasa if returns in this section should be in list or as str; if as str
+    if watch_list(input_file, watchlist_file) == ["Secondary"]:
+        return ["Secondary"]
+    elif medical_advisory(input_file, countries_file) == ["Quarantine"]:
+        return ["Quarantine"]
+    elif returning_residents(input_file,countries_file) == ["Accept"]:
+        return ["Accept"]
+    elif visit_visa(input_file, countries_file) == ["Accept"]:
+        return ["Accept"]
+    elif transit_visa(input_file, countries_file) == ["Accept"]:
+        return ["Accept"]
+    else:
+        return ["Reject"]
 
 
 def valid_passport_format(passport_number):
