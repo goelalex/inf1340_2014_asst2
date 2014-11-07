@@ -21,7 +21,7 @@ def watch_list(input_file, watchlist_file):
     Checks if a person trying to enter the country is on the watchlist
     :param input_file: The name of a JSON formatted file that contains cases to decide
     :param watchlist_file: The name of a JSON formatted file that contains names and passport numbers on a watchlist
-    :return: Whether person needs to be sent to: "Secondary", None
+    :return: List of strings. Possible values of strings are:"Secondary", None
     """
     i = 0
     with open("input_file", "r") as test_watchlist:
@@ -60,7 +60,7 @@ def medical_advisory(input_file, countries_file):
     :param input_file: The name of a JSON formatted file that contains cases to decide
     :param countries_file: The name of a JSON formatted file that contains country data, such as whether
         an entry or transit visa is required, and whether there is currently a medical advisory
-    :return: Whether person needs to be sent to: "Quarantine", None
+    :return: List of strings. Possible values of strings are: "Quarantine", None
     """
     i = 0
     medical_advisory_list = []
