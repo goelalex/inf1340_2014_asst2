@@ -21,7 +21,7 @@ def watch_list(input_file, watchlist_file):
     with open("input_file", "r") as test_watchlist:
         test_watchlist_contents = test_watchlist.read()
         test_watchlist_contents_list = json.loads(test_watchlist_contents)
-        each_test_watchlist_contents = test_watchlist_contents_list[0]
+        each_test_watchlist_contents = test_watchlist_contents_list[0].upper()
     test_watchlist.close()
     with open("watchlist_file","r") as watchlist:
         watchlist_contents = watchlist.read()
@@ -31,10 +31,12 @@ def watch_list(input_file, watchlist_file):
         while i < len(watchlist_contents_list):
             each_watchlist = watchlist_contents_list[i]
             each_watchlist_first_name = each_watchlist["first_name"]
-            watchlist_first_name .append(each_watchlist_first_name)
+            checked_each_watchlist_first_name = each_watchlist_first_name.upper()
+            watchlist_first_name .append(checked_each_watchlist_first_name)
             each_watchlist_passport = each_watchlist["passport"]
-            watchlist_passport .append(each_watchlist_passport)
-            check_letter_case(watchlist_passport)
+            checked_each_watchlist_passport = each_watchlist_passport.upper()
+            watchlist_passport .append(checked_each_watchlist_passport)
+
             i += 1
     watchlist.close()
 
@@ -141,7 +143,7 @@ def transit_visa(input_file, countries_file):
         print(type(countries_codes_list))
     while i < len(countries_codes_list):
         each_country_code = countries_codes_list[i]
-        each_country_contents = countries_contents_dic[countries_codes_list[i]]
+        each_country_contents = countries_contents_dic[each_country_code]
         i += 1
         if each_country_contents["transit_visa"] == "1":
             transit_visa_list.append(each_country_contents["code"])
@@ -151,7 +153,6 @@ def transit_visa(input_file, countries_file):
         entries_content_list = json.loads(entries_content)
         while i < len(entries_content_list):
             each_entry = entries_content_list[i]
-            check_letter_case(each_entry)
             if each_entry["entry_reason"] == "transit":
                 from_dic = each_entry["from"]
                 if from_dic["country"] in transit_visa_list:
@@ -165,11 +166,6 @@ def transit_visa(input_file, countries_file):
                         return ["Reject"]
 
 
-def check_letter_case(string_check):
-    if string_check.islower() is True:
-        string_check.upper()
-    else:
-        return None
 
 
 def decide(input_file, watchlist_file, countries_file):
@@ -181,11 +177,17 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
-    watch_list()
-    medical_advisory()
-    returning_residents()
-    visit_visa()
-    transit_visa()
+
+    watch_list(input_file, watchlist_file)
+
+    medical_advisory(input_file, countries_file)
+
+    returning_residents(input_file,countries_file)
+
+    visit_visa(input_file, countries_file)
+
+    transit_visa(input_file, countries_file)
+
 
 
     return ["Reject"]
