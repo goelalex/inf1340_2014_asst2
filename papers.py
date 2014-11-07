@@ -176,6 +176,7 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
 
+
     #Ask Sasa if returns in this section should be in list or as str; if as str
     if watch_list(input_file, watchlist_file) == ["Secondary"]:
         return ["Secondary"]
