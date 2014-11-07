@@ -210,9 +210,10 @@ def decide(input_file, watchlist_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
     #Ask Sasa if returns in this section should be in list or as str; if as str
-    #Needs to loop through a list of the people
+    #Needs to loop through a list of the people (iterate through all of the visitors) -- use a for loop 
     #Open the files in decide and save them in a dictionary
     #Add 1 try and except with these file openings
+
 
     if watch_list(input_file, watchlist_file) == ["Secondary"]:
         return ["Secondary"]
