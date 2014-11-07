@@ -75,7 +75,7 @@ def medical_advisory(input_file, countries_file):
             medical_advisory_list.append(each_country_contents["code"])
     countries.close()
 
-    with open("input_file","r")as entries:
+    with open("input_file", "r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
     entries.close()
@@ -100,7 +100,7 @@ def returning_residents(input_file,countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject"
     """
     i = 0
-    with open("input_file.json","r")as entries:
+    with open("input_file.json", "r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
         each_entry = {}
@@ -128,7 +128,7 @@ def visit_visa(input_file, countries_file):
     i = 0
     #starting by sorting out those with visit visa requirement
     visit_visa_list = []
-    with open("countries_file" , "r") as countries:
+    with open("countries_file", "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
@@ -140,7 +140,7 @@ def visit_visa(input_file, countries_file):
             visit_visa_list.append(each_country_contents["code"])
     countries.close()
 
-    with open("input_file","r")as entries:
+    with open("input_file", "r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
     while i < len(entries_content_list):
