@@ -17,6 +17,12 @@ import json
 
 
 def watch_list(input_file, watchlist_file):
+    """
+    Checks if a person trying to enter the country is on the watchlist
+    :param input_file: The name of a JSON formatted file that contains cases to decide
+    :param watchlist_file: The name of a JSON formatted file that contains names and passport numbers on a watchlist
+    :return: Whether person needs to be sent to: "Secondary", None
+    """
     i = 0
     with open("input_file", "r") as test_watchlist:
         test_watchlist_contents = test_watchlist.read()
@@ -49,6 +55,13 @@ def watch_list(input_file, watchlist_file):
 
 
 def medical_advisory(input_file, countries_file):
+    """
+    Checks if person needs to be quarantined
+    :param input_file: The name of a JSON formatted file that contains cases to decide
+    :param countries_file: The name of a JSON formatted file that contains country data, such as whether
+        an entry or transit visa is required, and whether there is currently a medical advisory
+    :return: Whether person needs to be sent to: "Quarantine", None
+    """
     i = 0
     medical_advisory_list = []
     with open("countries_file", "r") as countries:
@@ -79,6 +92,13 @@ def medical_advisory(input_file, countries_file):
 
 
 def returning_residents(input_file,countries_file):
+    """
+    Checks if person is returning resident
+    :param input_file: The name of a JSON formatted file that contains cases to decide
+    :param countries_file: The name of a JSON formatted file that contains country data, such as whether
+        an entry or transit visa is required, and whether there is currently a medical advisory
+    :return: List of strings. Possible values of strings are: "Accept", "Reject"
+    """
     i = 0
     with open("input_file.json","r")as entries:
         entries_content = entries.read()
@@ -98,6 +118,13 @@ def returning_residents(input_file,countries_file):
 
 
 def visit_visa(input_file, countries_file):
+    """
+    Checks if person needs a visitors visa and whether the visa is valid
+    :param input_file: The name of a JSON formatted file that contains cases to decide
+    :param countries_file: The name of a JSON formatted file that contains country data, such as whether
+        an entry or transit visa is required, and whether there is currently a medical advisory
+    :return: List of strings. Possible values of strings are: "Accept", "Reject"
+    """
     i = 0
     #starting by sorting out those with visit visa requirement
     visit_visa_list = []
@@ -134,6 +161,13 @@ def visit_visa(input_file, countries_file):
 
 
 def transit_visa(input_file, countries_file):
+    """
+    Checks if person needs a transit visa and whether the visa is valid
+    :param input_file: The name of a JSON formatted file that contains cases to decide
+    :param countries_file: The name of a JSON formatted file that contains country data, such as whether
+        an entry or transit visa is required, and whether there is currently a medical advisory
+    :return: List of strings. Possible values of strings are: "Accept", "Reject"
+    """
     i = 0
     transit_visa_list = []
     with open("countries_file", "r") as countries:
