@@ -174,6 +174,7 @@ def transit_visa(input_file, countries_file):
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
+        #Print countries here needs to be fixed
         print(type(countries_codes_list))
     while i < len(countries_codes_list):
         each_country_code = countries_codes_list[i]
@@ -212,6 +213,33 @@ def decide(input_file, watchlist_file, countries_file):
     #Ask Sasa if returns in this section should be in list or as str; if as str
     #Needs to loop through a list of the people (iterate through all of the visitors) -- use a for loop
     #Open the files in decide and save them in a dictionary
+    """
+    Not sure which version of this we need or if this will work :(
+    with open("input_file","r") as watchlist:
+        entries_contents = input.read()
+        entries_contents_list = json.loads(entries_contents)
+        entries_first_name = []
+        Do we need last name?
+        entries_last_name = []
+        entries_passport = []
+        input_file.close()
+     with open("countries_file", "r") as countries:
+        countries_contents = countries.read()
+        countries_contents_dic = json.loads(countries_contents)
+        countries_codes_list = list(countries_contents_dic.keys())
+        countries_file.close()
+    with open("input_file", "r") as test_watchlist:
+        test_watchlist_contents = test_watchlist.read()
+        test_watchlist_contents_list = json.loads(test_watchlist_contents)
+        each_test_watchlist_contents = test_watchlist_contents_list[0].upper()
+        test_watchlist.close()
+    with open("watchlist_file","r") as watchlist:
+        watchlist_contents = watchlist.read()
+        watchlist_contents_list = json.loads(watchlist_contents)
+        watchlist_first_name = []
+        watchlist_passport = []
+        watchlist_file.close()
+    """
     #Add 1 try and except with these file openings
     try:
         file_reader = open(input_file)
