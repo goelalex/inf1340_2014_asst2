@@ -54,9 +54,9 @@
         },
         "entry_reason": "visit",
         "from": {
-            "city": "Weasel",
-            "region": "Rodent",
-            "country": "BRD"
+            "city": "Doughnut",
+            "region": "Bagel",
+            "country": "ALB"
         }
     },
     {
@@ -67,19 +67,14 @@
         "home": {
             "city": "Winter",
             "region": "Spring",
-            "country": "HDR"
+            "country": "HJR"
         },
         "entry_reason": "transit",
         "from": {
             "city": "Winter",
             "region": "Spring",
-            "country": "HDR"
+            "country": "HJR"
         },
-        "via": {
-            "city": "Weasel",
-            "region": "Rodent",
-            "country": "BRD"
-        }
     },
     {
         "passport": "W3TG5-9DF80-F7FHA-AS8F9-ASDJ1",
@@ -92,9 +87,9 @@
             "country": "FRY"
         },
         "from": {
-            "city": "Weasel",
-            "region": "Rodent",
-            "country": "BRD"
+            "city": "Sweet",
+            "region": "Bake",
+            "country": "FRY"
         },
         "entry_reason": "transit",
         "visa": {
