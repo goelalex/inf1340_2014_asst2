@@ -24,12 +24,12 @@ def watch_list(input_file, watchlist_file):
     :return: List of strings. Possible values of strings are:"Secondary", None
     """
     i = 0
-    with open("input_file", "r") as test_watchlist:
+    with open(input_file, "r") as test_watchlist:
         test_watchlist_contents = test_watchlist.read()
         test_watchlist_contents_list = json.loads(test_watchlist_contents)
-        each_test_watchlist_contents = test_watchlist_contents_list[0].upper()
+        each_test_watchlist_contents = test_watchlist_contents_list[i]
     test_watchlist.close()
-    with open("watchlist_file","r") as watchlist:
+    with open(watchlist_file,"r") as watchlist:
         watchlist_contents = watchlist.read()
         watchlist_contents_list = json.loads(watchlist_contents)
         watchlist_first_name = []
@@ -44,8 +44,9 @@ def watch_list(input_file, watchlist_file):
         watchlist_passport .append(checked_each_watchlist_passport)
         i += 1
     watchlist.close()
-
     if each_test_watchlist_contents['passport'] in watchlist_passport:
+        #print(each_test_watchlist_contents['passport'])
+        #print(each_test_watchlist_contents['passport'].upper)
         return["Secondary"]
     elif each_test_watchlist_contents['first_name'] in watchlist_first_name:
         return["Secondary"]
@@ -63,7 +64,7 @@ def medical_advisory(input_file, countries_file):
     """
     i = 0
     medical_advisory_list = []
-    with open("countries_file", "r") as countries:
+    with open(countries_file, "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
@@ -75,46 +76,49 @@ def medical_advisory(input_file, countries_file):
             medical_advisory_list.append(each_country_contents["code"])
     countries.close()
 
-    with open("input_file", "r")as entries:
+    with open(input_file, "r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
     entries.close()
-    while i < len(entries_content_list):
-            each_entry = entries_content_list[i]
-            from_dic = each_entry["from"]
+    #while i < len(entries_content_list):
+    each_entry = entries_content_list[0]
+
+    if 'from' in each_entry.keys():
+        from_dic = each_entry["from"]
+        if from_dic["country"] in medical_advisory_list:
+            return["Quarantine"]
+        elif from_dic["country"] not in medical_advisory_list and 'via' in each_entry.keys:
             via_dic = each_entry["via"]
-            if from_dic["country"] in medical_advisory_list:
-                return["Quarantine"]
-            elif via_dic["country"] in medical_advisory_list:
+            if via_dic["country"] in medical_advisory_list:
                 return["Quarantine"]
             else:
                 return None
+        else:
+            print("Error:no from or via country information")
 
 
-def returning_residents(input_file,countries_file):
+
+def returning_residents(input_file):
     """
     Checks if person is returning resident
     :param input_file: The name of a JSON formatted file that contains cases to decide
-    :param countries_file: The name of a JSON formatted file that contains country data, such as whether
-        an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject"
     """
     i = 0
-    with open("input_file.json", "r")as entries:
+    with open(input_file, "r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
-        each_entry = {}
+    entries.close()
+    '''
     while i < len(entries_content_list):
-        each_entry = entries_content_list[i]
-        i += 1
-        if each_entry["entry_reason"] == "returning":
-            home_dic = each_entry["home"]
-            if home_dic["country"] == "KAN":
-                return ["Accept"]
-            else:
-                return ["Reject"]
-        else:
-            return ["Reject"]
+    i += 1
+    '''
+    each_entry = entries_content_list[i]
+    home_dic = each_entry["home"]
+    if each_entry["entry_reason"] == "returning" and home_dic["country"] == "KAN":
+        return ["Accept"]
+    else:
+        return ["Reject"]
 
 
 def visit_visa(input_file, countries_file):
@@ -126,9 +130,8 @@ def visit_visa(input_file, countries_file):
     :return: List of strings. Possible values of strings are: "Accept", "Reject"
     """
     i = 0
-    #starting by sorting out those with visit visa requirement
     visit_visa_list = []
-    with open("countries_file", "r") as countries:
+    with open(countries_file, "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
@@ -140,24 +143,31 @@ def visit_visa(input_file, countries_file):
             visit_visa_list.append(each_country_contents["code"])
     countries.close()
 
-    with open("input_file", "r")as entries:
+    with open(input_file, "r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
-    while i < len(entries_content_list):
-        each_entry = entries_content_list[i]
-        visa_dic = each_entry["visa"]
-        issue_date = visa_dic["date"]
-        today = datetime.date.today()
-        margin = datetime.timedelta(days=730)
-        if each_entry["entry_reason"] == "visit":
-            from_dic=each_entry["from"]
-            if from_dic["country"] in visit_visa_list:
-                if 'visa' not in each_entry.keys():
-                    return ["Reject"]
-            elif today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
+
+    #while i < len(entries_content_list):
+    each_entry = entries_content_list[0]
+
+    if each_entry["entry_reason"] == "visit":
+        from_dic = each_entry["from"]
+        if from_dic["country"] in visit_visa_list and 'visa' not in each_entry.keys():
+                return ["Reject for no visa"]
+        elif from_dic["country"] in visit_visa_list and 'visa' in each_entry.keys():
+            visa_dic = each_entry["visa"]
+            issue_date = visa_dic["date"]
+            today = datetime.date.today()
+            year = int(issue_date[0:4])
+            month = int(issue_date[5:7])
+            day = int(issue_date[9:11])
+            margin = datetime.timedelta(days=730)
+            if today-margin <= datetime.date(year, month, day):
                 return ["Accept"]
             else:
-                return ["Reject"]
+                return ["Reject for visa not valid"]
+    else:
+        return None
 
 
 def transit_visa(input_file, countries_file):
@@ -170,35 +180,42 @@ def transit_visa(input_file, countries_file):
     """
     i = 0
     transit_visa_list = []
-    with open("countries_file", "r") as countries:
+    with open(countries_file, "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
         #Print countries here needs to be fixed
-        print(type(countries_codes_list))
     while i < len(countries_codes_list):
         each_country_code = countries_codes_list[i]
         each_country_contents = countries_contents_dic[each_country_code]
         i += 1
-        if each_country_contents["transit_visa"] == "1":
+        if each_country_contents["transit_visa_required"] == "1":
             transit_visa_list.append(each_country_contents["code"])
     countries.close()
-    with open("input_file","r")as entries:
+    with open(input_file,"r")as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
-        while i < len(entries_content_list):
-            each_entry = entries_content_list[i]
-            if each_entry["entry_reason"] == "transit":
-                from_dic = each_entry["from"]
-                if from_dic["country"] in transit_visa_list:
-                    visa_dic = each_entry["visa"]
-                    issue_date = visa_dic["date"]
-                    today = datetime.date.today()
-                    margin = datetime.timedelta(days=730)
-                    if today-margin <= datetime.date(year=issue_date[0:4], month=issue_date[5:7], day=issue_date[9:11]):
-                        return ["Accept"]
-                    else:
-                        return ["Reject"]
+        #while i < len(entries_content_list):
+        each_entry = entries_content_list[1]
+
+        if each_entry["entry_reason"] == "transit":
+            from_dic = each_entry["from"]
+            if from_dic["country"] in transit_visa_list and 'visa' not in each_entry.keys():
+                return ["Reject for no visa"]
+            elif from_dic["country"] in transit_visa_list and 'visa' in each_entry.keys():
+                visa_dic = each_entry["visa"]
+                issue_date = visa_dic["date"]
+                today = datetime.date.today()
+                year = int(issue_date[0:4])
+                month = int(issue_date[5:7])
+                day = int(issue_date[9:11])
+                margin = datetime.timedelta(days=730)
+                if today-margin <= datetime.date(year, month, day):
+                    return ["Accept"]
+                else:
+                    return ["Reject for visa not valid"]
+        else:
+            return None
 
 
 def decide(input_file, watchlist_file, countries_file):
@@ -223,7 +240,7 @@ def decide(input_file, watchlist_file, countries_file):
         entries_last_name = []
         entries_passport = []
         input_file.close()
-     with open("countries_file", "r") as countries:
+    with open("countries_file", "r") as countries:
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
         countries_codes_list = list(countries_contents_dic.keys())
@@ -241,6 +258,7 @@ def decide(input_file, watchlist_file, countries_file):
         watchlist_file.close()
     """
     #Add 1 try and except with these file openings
+    '''
     try:
         file_reader = open(input_file)
         input_file = file_reader.read()
@@ -248,18 +266,20 @@ def decide(input_file, watchlist_file, countries_file):
         raise(FileNotFoundError)
     else:
 
-        if watch_list(input_file, watchlist_file) == ["Secondary"]:
-            return ["Secondary"]
-        elif medical_advisory(input_file, countries_file) == ["Quarantine"]:
-            return ["Quarantine"]
-        elif returning_residents(input_file,countries_file) == ["Accept"]:
-            return ["Accept"]
-        elif visit_visa(input_file, countries_file) == ["Accept"]:
-            return ["Accept"]
-        elif transit_visa(input_file, countries_file) == ["Accept"]:
-            return ["Accept"]
-        else:
-            return ["Reject"]
+    '''
+
+    if watch_list(input_file, watchlist_file) == ["Secondary"]:
+        return ["Secondary"]
+    elif medical_advisory(input_file, countries_file) == ["Quarantine"]:
+        return ["Quaranine"]
+    elif returning_residents(input_file) == ["Accept"]:
+        return ["Accept"]
+    elif visit_visa(input_file, countries_file) == ["Accept"]:
+        return ["Accept"]
+    elif transit_visa(input_file, countries_file) == ["Accept"]:
+        return ["Accept"]
+    else:
+        return ["Reject"]
 
 
 def valid_passport_format(passport_number):
