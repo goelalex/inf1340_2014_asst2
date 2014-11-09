@@ -16,7 +16,7 @@
         },
         "entry_reason": "transit",
         "visa": {
-            "date": "2013-01-16",
+            "date": "2011-01-16",
             "code": "8FJ81-900A8"
         }
     },
@@ -29,6 +29,11 @@
             "city": "Ready",
             "region": "Road",
             "country": "GOR"
+               },
+        "entry_reason": "transit",
+        "visa": {
+            "date": "2011-01-16",
+            "code": "8FJ81-900A8"
         }
     },
     {
@@ -49,7 +54,7 @@
         },
         "entry_reason": "transit",
         "visa": {
-            "date": "2011-05-19",
+            "date": "2010-05-19",
             "code": "ASDKF-JMM8K"
         }
     },
@@ -87,7 +92,7 @@
         },
         "entry_reason": "visit",
         "visa": {
-            "date": "2013-08-08",
+            "date": "2011-08-08",
             "code": "5JD4V-4DEF4"
         }
     }
