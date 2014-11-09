@@ -19,7 +19,10 @@ def test_basic():
     assert decide("test_returning_citizen.json", "watchlist.json", "countries.json") == ["Accept", "Accept"]
     assert decide("test_watchlist.json", "watchlist.json", "countries.json") == ["Secondary"]
     assert decide("test_quarantine.json", "watchlist.json", "countries.json") == ["Quarantine"]
-    assert decide("test_added_entires.json")
+    assert decide("test_added_entries.json", "watchlist.json", "countries.json") == ["Accept", "Accept"]
+    assert decide("test_added_quarantine.json", "watchlist.json", "countries.json") == ["Quarantine"]
+    assert decide("test_added_missing_visa.json", "watchlist.json", "countries.json") == ["Reject"]
+
 
 
 def test_files():
