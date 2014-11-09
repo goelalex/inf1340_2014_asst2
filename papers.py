@@ -40,9 +40,9 @@ def watch_list(entries_content_list, watchlist_contents_list, j):
     if each_entries_content['passport'] in watchlist_passport:
         #print(each_entries_content['passport'])
         #print(each_entries_content['passport'].upper)
-        return["Secondary"]
+        return "Secondary"
     elif each_entries_content['first_name'] in watchlist_first_name:
-        return["Secondary"]
+        return "Secondary"
     else:
         return None
 
@@ -71,18 +71,18 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
     if 'from' in each_entry.keys():
         from_dic = each_entry["from"]
         if from_dic["country"] in medical_advisory_list:
-            return["Quarantine"]
-        elif from_dic["country"] not in medical_advisory_list and 'via' in each_entry.keys:
+            return "Quarantine"
+        elif from_dic["country"] not in medical_advisory_list and 'via' in each_entry.keys():
             via_dic = each_entry["via"]
             if via_dic["country"] in medical_advisory_list:
-                return["Quarantine"]
+                return "Quarantine"
             else:
                 return None
         else:
-            return ["Error:no from or via country information"]
+            return "Error:no from or via country information"
 
 
-def returning_residents(entries_content_list,j):
+def returning_residents(entries_content_list, j):
     """
     Checks if person is returning resident
     :param input_file: The name of a JSON formatted file that contains cases to decide
@@ -91,9 +91,9 @@ def returning_residents(entries_content_list,j):
     each_entry = entries_content_list[j]
     home_dic = each_entry["home"]
     if each_entry["entry_reason"] == "returning" and home_dic["country"] == "KAN":
-        return ["Accept"]
+        return "Accept"
     else:
-        return ["Reject"]
+        return "Reject"
 
 
 def visit_visa(entries_content_list, countries_contents_dic, j):
@@ -118,7 +118,7 @@ def visit_visa(entries_content_list, countries_contents_dic, j):
     if each_entry["entry_reason"] == "visit":
         from_dic = each_entry["from"]
         if from_dic["country"] in visit_visa_list and 'visa' not in each_entry.keys():
-                return ["Reject for no visa"]
+                return "Reject"
         elif from_dic["country"] in visit_visa_list and 'visa' in each_entry.keys():
             visa_dic = each_entry["visa"]
             issue_date = visa_dic["date"]
@@ -128,9 +128,9 @@ def visit_visa(entries_content_list, countries_contents_dic, j):
             day = int(issue_date[9:11])
             margin = datetime.timedelta(days=730)
             if today-margin <= datetime.date(year, month, day):
-                return ["Accept"]
+                return "Accept"
             else:
-                return ["Reject for visa not valid"]
+                return "Reject"
     else:
         return None
 
@@ -158,7 +158,7 @@ def transit_visa(entries_content_list, countries_contents_dic,j):
     if each_entry["entry_reason"] == "transit":
         from_dic = each_entry["from"]
         if from_dic["country"] in transit_visa_list and 'visa' not in each_entry.keys():
-            return ["Reject for no visa"]
+            return "Reject"
         elif from_dic["country"] in transit_visa_list and 'visa' in each_entry.keys():
             visa_dic = each_entry["visa"]
             issue_date = visa_dic["date"]
@@ -168,9 +168,9 @@ def transit_visa(entries_content_list, countries_contents_dic,j):
             day = int(issue_date[9:11])
             margin = datetime.timedelta(days=730)
             if today-margin <= datetime.date(year, month, day):
-                return ["Accept"]
+                return "Accept"
             else:
-                return ["Reject for visa not valid"]
+                return "Reject"
     else:
         return None
 
@@ -187,7 +187,7 @@ def decide(input_file, watchlist_file, countries_file):
     #Ask Sasa if returns in this section should be in list or as str; if as str
     #Needs to loop through a list of the people (iterate through all of the visitors) -- use a for loop
     #Open the files in decide and save them in a dictionary
-    
+
     with open(input_file, "r") as entries:
         entries_content = entries.read()
         entries_content_list = json.loads(entries_content)
@@ -202,7 +202,8 @@ def decide(input_file, watchlist_file, countries_file):
         countries_contents = countries.read()
         countries_contents_dic = json.loads(countries_contents)
     countries.close()
-    
+
+
     """
     Not sure which version of this we need or if this will work :(
     with open("input_file","r") as watchlist:
@@ -240,19 +241,25 @@ def decide(input_file, watchlist_file, countries_file):
     else:
 
     '''
+    decision_list = []
+    for j in range(-1, len(entries_content_list)-1):
+        j += 1
+        if watch_list(entries_content_list, watchlist_contents_list, j) == "Secondary":
+            decision = "Secondary"
+        elif medical_advisory(entries_content_list, countries_contents_dic, j) == "Quarantine":
+            decision = "Quarantine"
+        elif returning_residents(entries_content_list, j) == "Accept":
+            decision = "Accept"
+        elif visit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
+            decision = "Accept"
+        elif transit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
+            decision = "Accept"
+        else:
+            decision = "Reject"
+        decision_list.append(decision)
+    return decision_list
 
-    if watch_list(input_file, watchlist_file) == ["Secondary"]:
-        return ["Secondary"]
-    elif medical_advisory(input_file, countries_file) == ["Quarantine"]:
-        return ["Quarantine"]
-    elif returning_residents(input_file) == ["Accept"]:
-        return ["Accept"]
-    elif visit_visa(input_file, countries_file) == ["Accept"]:
-        return ["Accept"]
-    elif transit_visa(input_file, countries_file) == ["Accept"]:
-        return ["Accept"]
-    else:
-        return ["Reject"]
+
 
 
 def valid_passport_format(passport_number):
