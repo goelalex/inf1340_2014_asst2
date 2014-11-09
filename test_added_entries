@@ -5,22 +5,21 @@
         "last_name": "BASSET",
         "birth_date": "1976-05-12",
         "home": {
-            "city": "Bala",
-            "region": "ON",
-            "country": "KAN"
-        },
-        "entry_reason": "returning",
-        "from": {
             "city": "Winter",
             "region": "Spring",
-            "country": "HDR"
+            "country": "HJR"
         },
-        "via": {
+        "from": {
             "city": "Weasel",
             "region": "Rodent",
             "country": "BRD"
+        },
+        "entry_reason": "transit",
+        "visa": {
+            "date": "2015-08-11",
+            "code": "SDFG8-F74H3"
         }
-    }
+    },
     {
         "passport": "O8FBH-JHASD-123XA-ASD81-0KDUK",
         "first_name": "ELADIA",
@@ -37,12 +36,12 @@
             "region": "Rodent",
             "country": "BRD"
         },
-        "from": {
+        "via": {
             "city": "Ratio",
             "region": "Fraction",
             "country": "III"
         }
-    }
+    },
     {
         "passport": "ASD87-8H12J-HAS8A-S1SD7-JFG32",
         "first_name": "TANDRA",
@@ -53,16 +52,54 @@
             "region": "Bagel",
             "country": "ALB"
         },
-        "entry_reason": "returning",
+        "entry_reason": "visit",
+        "from": {
+            "city": "Weasel",
+            "region": "Rodent",
+            "country": "BRD"
+        }
+    },
+    {
+        "passport": "SADF7-KBVCN-4SDF4-CV4B5-EQ4HK",
+        "first_name": "JANI",
+        "last_name": "RYANT",
+        "birth_date": "1950-03-22",
+        "home": {
+            "city": "Winter",
+            "region": "Spring",
+            "country": "HDR"
+        },
+        "entry_reason": "transit",
+        "from": {
+            "city": "Winter",
+            "region": "Spring",
+            "country": "HDR"
+        },
+        "via": {
+            "city": "Weasel",
+            "region": "Rodent",
+            "country": "BRD"
+        }
+    },
+    {
+        "passport": "W3TG5-9DF80-F7FHA-AS8F9-ASDJ1",
+        "first_name": "AAVOL",
+        "last_name": "MARA",
+        "birth_date": "1968-10-30",
+        "home": {
+            "city": "Sweet",
+            "region": "Bake",
+            "country": "FRY"
+        },
         "from": {
             "city": "Weasel",
             "region": "Rodent",
             "country": "BRD"
         },
-        "from": {
-            "city": "Winter",
-            "region": "Spring",
-            "country": "HDR"
+        "entry_reason": "transit",
+        "visa": {
+            "date": "2015-09-14",
+            "code": "SDFGH-U7Y5H"
         }
     }
 ]
