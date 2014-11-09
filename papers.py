@@ -53,7 +53,7 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
     :param input_file: The name of a JSON formatted file that contains cases to decide
     :param countries_file: The name of a JSON formatted file that contains country data, such as whether
         an entry or transit visa is required, and whether there is currently a medical advisory
-    :return: List of strings. Possible values of strings are: "Quarantine", None
+    :return: List of strings. Possible values of strings are: "Quarantine", None, "Error: from or via country information"
     """
     i = 0
     medical_advisory_list = []
@@ -86,7 +86,7 @@ def returning_residents(entries_content_list,j):
     """
     Checks if person is returning resident
     :param input_file: The name of a JSON formatted file that contains cases to decide
-    :return: List of strings. Possible values of strings are: "Accept", "Reject"
+    :return: List of strings. Possible values of strings are: "Accept", None, "Reject"
     """
     each_entry = entries_content_list[j]
     home_dic = each_entry["home"]
@@ -102,7 +102,7 @@ def visit_visa(entries_content_list, countries_contents_dic, j):
     :param input_file: The name of a JSON formatted file that contains cases to decide
     :param countries_file: The name of a JSON formatted file that contains country data, such as whether
         an entry or transit visa is required, and whether there is currently a medical advisory
-    :return: List of strings. Possible values of strings are: "Accept", "Reject"
+    :return: List of strings. Possible values of strings are: "Accept", None, "Reject for visa not valid"
     """
     i = 0
     visit_visa_list = []
