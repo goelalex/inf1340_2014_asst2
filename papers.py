@@ -16,6 +16,30 @@ import datetime
 import json
 
 
+def check_valid(entries_content_list):
+
+    try:
+        if not valid_passport_format(entries_content_list["passport"]):
+            return False
+        if not valid_date_format(entries_content_list["birth_date"]):
+            return False
+
+        entries_content_list["home"]["city"]
+        entries_content_list["home"]["region"]
+        entries_content_list["home"]["country"]
+        entries_content_list["from"]["city"]
+        entries_content_list["from"]["region"]
+        entries_content_list["from"]["country"]
+        entries_content_list["first_name"]
+        entries_content_list["last_name"]
+        entries_content_list["entry_reason"]
+        #check for must-contain information
+
+    except KeyError:
+        return "Reject"
+
+
+
 def watch_list(entries_content_list, watchlist_contents_list, j):
     """
     Checks if a person trying to enter the country is on the watchlist
@@ -61,7 +85,8 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
     countries_codes_list = list(countries_contents_dic.keys())
     for each_country_code in countries_codes_list:
         each_country_contents = countries_contents_dic[each_country_code]
-        if each_country_contents["medical_advisory"] != "":
+
+        if countries_contents_dic([entries_content_list[""]]["medical_advisory"] )!= "":
             medical_advisory_list.append(each_country_contents["code"])
 
     each_entry = entries_content_list[j]
@@ -198,7 +223,9 @@ def decide(input_file, watchlist_file, countries_file):
         decision_list = []
         for j in range(-1, len(entries_content_list)-1):
             j += 1
-            if watch_list(entries_content_list, watchlist_contents_list, j) == "Secondary":
+            if check_valid(entries_content_list) == "Reject":
+                decision = "Reject"
+            elif watch_list(entries_content_list, watchlist_contents_list, j) == "Secondary":
                 decision = "Secondary"
             elif medical_advisory(entries_content_list, countries_contents_dic, j) == "Quarantine":
                 decision = "Quarantine"
@@ -212,6 +239,12 @@ def decide(input_file, watchlist_file, countries_file):
                 decision = "Reject"
             decision_list.append(decision)
         return decision_list
+
+    '''
+     quarantine, reject,
+        secondary, and accept.
+
+    '''
 
 
 
