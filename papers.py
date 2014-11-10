@@ -57,29 +57,14 @@ def watch_list(entries_content_list, watchlist_contents_list, j):
     :return: List of strings. Possible values of string is:"Secondary"
     """
     each_entries_content = entries_content_list[j]
-    watchlist_first_name = []
-    watchlist_last_name = []
-    watchlist_passport = []
     for each_watchlist in watchlist_contents_list:
-        each_watchlist_first_name = each_watchlist["first_name"]
-        checked_each_watchlist_first_name = each_watchlist_first_name.upper()
-        watchlist_first_name .append(checked_each_watchlist_first_name)
-        #buiding list that contains all the passport numbers that are in watchlist
-
-        each_watchlist_last_name = each_watchlist["last_name"]
-        checked_each_watchlist_last_name = each_watchlist_last_name.upper()
-        watchlist_last_name .append(checked_each_watchlist_last_name)
-
-        each_watchlist_passport = each_watchlist["passport"]
-        checked_each_watchlist_passport = each_watchlist_passport.upper()
-        watchlist_passport .append(checked_each_watchlist_passport)
-        #buiding list containing all the passport numbers that are in watchlist
-    
-    if each_entries_content['passport'].upper() in watchlist_passport:
-        return "Secondary"
-    elif each_entries_content['first_name'].upper() in watchlist_first_name and \
-            each_entries_content['last_name'].upper() in watchlist_last_name:
-        return "Secondary"
+        if each_entries_content['passport'].upper() == each_watchlist["passport"].upper():
+            return "Secondary"
+        #Check if entry's passport number is in watchlist
+        elif each_entries_content['first_name'].upper() == each_watchlist["first_name"].upper()and \
+                each_entries_content['last_name'].upper() == each_watchlist["last_name"].upper():
+        #Check if entry's first name and last name are both in watchlist
+            return "Secondary"
     else:
         return None
 
