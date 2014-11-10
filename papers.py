@@ -280,6 +280,3 @@ def valid_date_format(date_string):
     except ValueError:
         return False
 
-
-print(decide("example_entries.json", "watchlist.json","countries.json"))
-
