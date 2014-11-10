@@ -23,25 +23,27 @@ def watch_list(entries_content_list, watchlist_contents_list, j):
     :param watchlist_file: The name of a JSON formatted file that contains names and passport numbers on a watchlist
     :return: List of strings. Possible values of strings are:"Secondary", None
     """
-    i = 0
     each_entries_content = entries_content_list[j]
     watchlist_first_name = []
+    watchlist_last_name = []
     watchlist_passport = []
-    while i < len(watchlist_contents_list):
-        each_watchlist = watchlist_contents_list[i]
+    for each_watchlist in watchlist_contents_list:
         each_watchlist_first_name = each_watchlist["first_name"]
         checked_each_watchlist_first_name = each_watchlist_first_name.upper()
         watchlist_first_name .append(checked_each_watchlist_first_name)
+
+        each_watchlist_last_name = each_watchlist["last_name"]
+        checked_each_watchlist_last_name = each_watchlist_last_name.upper()
+        watchlist_last_name .append(checked_each_watchlist_last_name)
+
         each_watchlist_passport = each_watchlist["passport"]
         checked_each_watchlist_passport = each_watchlist_passport.upper()
         watchlist_passport .append(checked_each_watchlist_passport)
-        i += 1
     
-    if each_entries_content['passport'] in watchlist_passport:
-        #print(each_entries_content['passport'])
-        #print(each_entries_content['passport'].upper)
+    if each_entries_content['passport'].upper() in watchlist_passport:
         return "Secondary"
-    elif each_entries_content['first_name'] in watchlist_first_name:
+    elif each_entries_content['first_name'].upper() in watchlist_first_name and \
+            each_entries_content['last_name'].upper() in watchlist_last_name:
         return "Secondary"
     else:
         return None
@@ -55,17 +57,13 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Quarantine", None, "Error: from or via country information"
     """
-    i = 0
     medical_advisory_list = []
     countries_codes_list = list(countries_contents_dic.keys())
-    while i < len(countries_codes_list):
-        each_country_code = countries_codes_list[i]
+    for each_country_code in countries_codes_list:
         each_country_contents = countries_contents_dic[each_country_code]
-        i += 1
         if each_country_contents["medical_advisory"] != "":
             medical_advisory_list.append(each_country_contents["code"])
-    
-    #while i < len(entries_content_list):
+
     each_entry = entries_content_list[j]
 
     if 'from' in each_entry.keys():
@@ -104,16 +102,12 @@ def visit_visa(entries_content_list, countries_contents_dic, j):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", None, "Reject for visa not valid"
     """
-    i = 0
     visit_visa_list = []
     countries_codes_list = list(countries_contents_dic.keys())
-    while i < len(countries_codes_list):
-        each_country_code = countries_codes_list[i]
+    for each_country_code in countries_codes_list:
         each_country_contents = countries_contents_dic[each_country_code]
-        i += 1
         if each_country_contents["visitor_visa_required"] == "1":
             visit_visa_list.append(each_country_contents["code"])
-    #while i < len(entries_content_list):
     each_entry = entries_content_list[j]
     if each_entry["entry_reason"] == "visit":
         from_dic = each_entry["from"]
@@ -143,17 +137,12 @@ def transit_visa(entries_content_list, countries_contents_dic,j):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject"
     """
-    i = 0
     transit_visa_list = []
     countries_codes_list = list(countries_contents_dic.keys())
-        #Print countries here needs to be fixed
-    while i < len(countries_codes_list):
-        each_country_code = countries_codes_list[i]
+    for each_country_code in countries_codes_list:
         each_country_contents = countries_contents_dic[each_country_code]
-        i += 1
         if each_country_contents["transit_visa_required"] == "1":
             transit_visa_list.append(each_country_contents["code"])
-    #while i < len(entries_content_list):
     each_entry = entries_content_list[j]
     if each_entry["entry_reason"] == "transit":
         from_dic = each_entry["from"]
@@ -188,76 +177,41 @@ def decide(input_file, watchlist_file, countries_file):
     #Needs to loop through a list of the people (iterate through all of the visitors) -- use a for loop
     #Open the files in decide and save them in a dictionary
 
-    with open(input_file, "r") as entries:
-        entries_content = entries.read()
-        entries_content_list = json.loads(entries_content)
-    entries.close()
-    
-    with open(watchlist_file,"r") as watchlist:
-        watchlist_contents = watchlist.read()
-        watchlist_contents_list = json.loads(watchlist_contents)
-    watchlist.close()
-    
-    with open(countries_file, "r") as countries:
-        countries_contents = countries.read()
-        countries_contents_dic = json.loads(countries_contents)
-    countries.close()
-
-
-    """
-    Not sure which version of this we need or if this will work :(
-    with open("input_file","r") as watchlist:
-        entries_contents = input.read()
-        entries_contents_list = json.loads(entries_contents)
-        entries_first_name = []
-        Do we need last name?
-        entries_last_name = []
-        entries_passport = []
-        input_file.close()
-    with open("countries_file", "r") as countries:
-        countries_contents = countries.read()
-        countries_contents_dic = json.loads(countries_contents)
-        countries_codes_list = list(countries_contents_dic.keys())
-        countries_file.close()
-    with open("input_file", "r") as entries:
-        entries_content = entries.read()
-        entries_content_list = json.loads(entries_content)
-        each_entries_content = entries_content_list[0].upper()
-        entries.close()
-    with open("watchlist_file","r") as watchlist:
-        watchlist_contents = watchlist.read()
-        watchlist_contents_list = json.loads(watchlist_contents)
-        watchlist_first_name = []
-        watchlist_passport = []
-        watchlist_file.close()
-    """
-    #Add 1 try and except with these file openings
-    '''
     try:
-        file_reader = open(input_file)
-        input_file = file_reader.read()
+        with open(input_file, "r") as entries:
+            entries_content = entries.read()
+            entries_content_list = json.loads(entries_content)
+        entries.close()
+    
+        with open(watchlist_file,"r") as watchlist:
+            watchlist_contents = watchlist.read()
+            watchlist_contents_list = json.loads(watchlist_contents)
+        watchlist.close()
+    
+        with open(countries_file, "r") as countries:
+            countries_contents = countries.read()
+            countries_contents_dic = json.loads(countries_contents)
+        countries.close()
     except:
-        raise(FileNotFoundError)
+        raise FileNotFoundError
     else:
-
-    '''
-    decision_list = []
-    for j in range(-1, len(entries_content_list)-1):
-        j += 1
-        if watch_list(entries_content_list, watchlist_contents_list, j) == "Secondary":
-            decision = "Secondary"
-        elif medical_advisory(entries_content_list, countries_contents_dic, j) == "Quarantine":
-            decision = "Quarantine"
-        elif returning_residents(entries_content_list, j) == "Accept":
-            decision = "Accept"
-        elif visit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
-            decision = "Accept"
-        elif transit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
-            decision = "Accept"
-        else:
-            decision = "Reject"
-        decision_list.append(decision)
-    return decision_list
+        decision_list = []
+        for j in range(-1, len(entries_content_list)-1):
+            j += 1
+            if watch_list(entries_content_list, watchlist_contents_list, j) == "Secondary":
+                decision = "Secondary"
+            elif medical_advisory(entries_content_list, countries_contents_dic, j) == "Quarantine":
+                decision = "Quarantine"
+            elif returning_residents(entries_content_list, j) == "Accept":
+                decision = "Accept"
+            elif visit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
+                decision = "Accept"
+            elif transit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
+                decision = "Accept"
+            else:
+                decision = "Reject"
+            decision_list.append(decision)
+        return decision_list
 
 
 
