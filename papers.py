@@ -81,32 +81,24 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Quarantine", None, "Error: from or via country information"
     """
+    '''
     medical_advisory_list = []
     countries_codes_list = list(countries_contents_dic.keys())
     for each_country_code in countries_codes_list:
         each_country_contents = countries_contents_dic[each_country_code]
 
-        if countries_contents_dic([entries_content_list[""]]["medical_advisory"] )!= "":
+        if countries_contents_dic["medical_advisory"] != "":
             medical_advisory_list.append(each_country_contents["code"])
+            '''
 
     each_entry = entries_content_list[j]
-
     try:
-        from_dic = each_entry["from"]
-        via_dic = each_entry["via"]
+        if countries_contents_dic[each_entry["from"]["country"]]["medical_advisory"] == "1":
+            return "Quarantine"
+        elif countries_contents_dic[each_entry["via"]["country"]]["medical_advisory"] == "1":
+            return "Quarantine"
     except KeyError:
         return "Reject"
-    else:
-        if from_dic["country"] in medical_advisory_list:
-            return "Quarantine"
-        elif from_dic["country"] not in medical_advisory_list and 'via' in each_entry.keys():
-
-            if via_dic["country"] in medical_advisory_list:
-                return "Quarantine"
-            else:
-                return None
-        else:
-            return "Error:no from or via country information"
 
 
 def returning_residents(entries_content_list, j):
