@@ -125,13 +125,16 @@ def visit_visa(entries_content_list, countries_contents_dic, j):
                 month = int(issue_date[5:7])
                 day = int(issue_date[9:11])
                 margin = datetime.timedelta(days=730)
+                #Check if issue date is within 730 days from now
                 if today-margin <= datetime.date(year, month, day):
                     visa_format = re.compile('^\w{5}-\w{5}$')
+                    #Check if visa code is in right format
                     if visa_format.match(each_entry["visa"]["code"]):
                         return "Accept"
                 else:
                     return "Reject"
             except KeyError:
+                #check if the entry has a visa
                 return "Reject"
     else:
         return None
@@ -157,13 +160,16 @@ def transit_visa(entries_content_list, countries_contents_dic,j):
                 month = int(issue_date[5:7])
                 day = int(issue_date[9:11])
                 margin = datetime.timedelta(days=730)
+                #Check if issue date is within 730 days from now
                 if today-margin <= datetime.date(year, month, day):
                     visa_format = re.compile('^\w{5}-\w{5}$')
+                    #Check if visa code is in right format
                     if visa_format.match(each_entry["visa"]["code"]):
                         return "Accept"
                 else:
                     return "Reject"
             except KeyError:
+                #check if the entry has a visa
                 return "Reject"
     else:
         return None
@@ -216,6 +222,7 @@ def decide(input_file, watchlist_file, countries_file):
                 decision = "Accept"
             decision_list.append(decision)
         return decision_list
+    #decide according to quarantine,reject,secondary,accept priority sequence
 
 
 def valid_passport_format(passport_number):
