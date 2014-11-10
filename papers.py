@@ -16,23 +16,23 @@ import datetime
 import json
 
 
-def check_valid(entries_content_list):
+def check_valid(entries_content_list,j):
 
     try:
-        if not valid_passport_format(entries_content_list["passport"]):
+        if not valid_passport_format(entries_content_list[j]["passport"]):
             return False
-        if not valid_date_format(entries_content_list["birth_date"]):
+        if not valid_date_format(entries_content_list[j]["birth_date"]):
             return False
 
-        entries_content_list["home"]["city"]
-        entries_content_list["home"]["region"]
-        entries_content_list["home"]["country"]
-        entries_content_list["from"]["city"]
-        entries_content_list["from"]["region"]
-        entries_content_list["from"]["country"]
-        entries_content_list["first_name"]
-        entries_content_list["last_name"]
-        entries_content_list["entry_reason"]
+        entries_content_list[j]["home"]["city"]
+        entries_content_list[j]["home"]["region"]
+        entries_content_list[j]["home"]["country"]
+        entries_content_list[j]["from"]["city"]
+        entries_content_list[j]["from"]["region"]
+        entries_content_list[j]["from"]["country"]
+        entries_content_list[j]["first_name"]
+        entries_content_list[j]["last_name"]
+        entries_content_list[j]["entry_reason"]
         #check for must-contain information
 
     except KeyError:
@@ -81,24 +81,18 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Quarantine", None, "Error: from or via country information"
     """
-    '''
-    medical_advisory_list = []
-    countries_codes_list = list(countries_contents_dic.keys())
-    for each_country_code in countries_codes_list:
-        each_country_contents = countries_contents_dic[each_country_code]
-
-        if countries_contents_dic["medical_advisory"] != "":
-            medical_advisory_list.append(each_country_contents["code"])
-            '''
 
     each_entry = entries_content_list[j]
     try:
-        if countries_contents_dic[each_entry["from"]["country"]]["medical_advisory"] == "1":
-            return "Quarantine"
-        elif countries_contents_dic[each_entry["via"]["country"]]["medical_advisory"] == "1":
+        if countries_contents_dic[each_entry["from"]["country"]]["medical_advisory"] != "":
             return "Quarantine"
     except KeyError:
         return "Reject"
+    try:
+        if countries_contents_dic[each_entry["via"]["country"]]["medical_advisory"] != "":
+            return "Quarantine"
+    except KeyError:
+        return None
 
 
 def returning_residents(entries_content_list, j):
@@ -108,11 +102,8 @@ def returning_residents(entries_content_list, j):
     :return: List of strings. Possible values of strings are: "Accept", None, "Reject"
     """
     each_entry = entries_content_list[j]
-    home_dic = each_entry["home"]
-    if each_entry["entry_reason"] == "returning" and home_dic["country"] == "KAN":
+    if each_entry["entry_reason"] == "returning" and each_entry["home"]["country"].upper() == "KAN":
         return "Accept"
-    else:
-        return "Reject"
 
 
 def visit_visa(entries_content_list, countries_contents_dic, j):
@@ -123,28 +114,24 @@ def visit_visa(entries_content_list, countries_contents_dic, j):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", None, "Reject for visa not valid"
     """
-    visit_visa_list = []
-    countries_codes_list = list(countries_contents_dic.keys())
-    for each_country_code in countries_codes_list:
-        each_country_contents = countries_contents_dic[each_country_code]
-        if each_country_contents["visitor_visa_required"] == "1":
-            visit_visa_list.append(each_country_contents["code"])
+
     each_entry = entries_content_list[j]
     if each_entry["entry_reason"] == "visit":
-        from_dic = each_entry["from"]
-        if from_dic["country"] in visit_visa_list and 'visa' not in each_entry.keys():
-                return "Reject"
-        elif from_dic["country"] in visit_visa_list and 'visa' in each_entry.keys():
-            visa_dic = each_entry["visa"]
-            issue_date = visa_dic["date"]
-            today = datetime.date.today()
-            year = int(issue_date[0:4])
-            month = int(issue_date[5:7])
-            day = int(issue_date[9:11])
-            margin = datetime.timedelta(days=730)
-            if today-margin <= datetime.date(year, month, day):
-                return "Accept"
-            else:
+        if countries_contents_dic[each_entry["from"]["country"].upper()]["visitor_visa_required"] == "1":
+            try:
+                issue_date = each_entry["visa"]["date"]
+                today = datetime.date.today()
+                year = int(issue_date[0:4])
+                month = int(issue_date[5:7])
+                day = int(issue_date[9:11])
+                margin = datetime.timedelta(days=730)
+                if today-margin <= datetime.date(year, month, day):
+                    visa_format = re.compile('^\w{5}-\w{5}$')
+                    if visa_format.match(each_entry["visa"]["code"]):
+                        return "Accept"
+                else:
+                    return "Reject"
+            except KeyError:
                 return "Reject"
     else:
         return None
@@ -158,28 +145,24 @@ def transit_visa(entries_content_list, countries_contents_dic,j):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject"
     """
-    transit_visa_list = []
-    countries_codes_list = list(countries_contents_dic.keys())
-    for each_country_code in countries_codes_list:
-        each_country_contents = countries_contents_dic[each_country_code]
-        if each_country_contents["transit_visa_required"] == "1":
-            transit_visa_list.append(each_country_contents["code"])
+
     each_entry = entries_content_list[j]
     if each_entry["entry_reason"] == "transit":
-        from_dic = each_entry["from"]
-        if from_dic["country"] in transit_visa_list and 'visa' not in each_entry.keys():
-            return "Reject"
-        elif from_dic["country"] in transit_visa_list and 'visa' in each_entry.keys():
-            visa_dic = each_entry["visa"]
-            issue_date = visa_dic["date"]
-            today = datetime.date.today()
-            year = int(issue_date[0:4])
-            month = int(issue_date[5:7])
-            day = int(issue_date[9:11])
-            margin = datetime.timedelta(days=730)
-            if today-margin <= datetime.date(year, month, day):
-                return "Accept"
-            else:
+        if countries_contents_dic[each_entry["from"]["country"].upper()]["transit_visa_required"] == "1":
+            try:
+                issue_date = each_entry["visa"]["date"]
+                today = datetime.date.today()
+                year = int(issue_date[0:4])
+                month = int(issue_date[5:7])
+                day = int(issue_date[9:11])
+                margin = datetime.timedelta(days=730)
+                if today-margin <= datetime.date(year, month, day):
+                    visa_format = re.compile('^\w{5}-\w{5}$')
+                    if visa_format.match(each_entry["visa"]["code"]):
+                        return "Accept"
+                else:
+                    return "Reject"
+            except KeyError:
                 return "Reject"
     else:
         return None
@@ -217,21 +200,20 @@ def decide(input_file, watchlist_file, countries_file):
         raise FileNotFoundError
     else:
         decision_list = []
-        for j in range(-1, len(entries_content_list)-1):
-            j += 1
+        for j in range(0, len(entries_content_list)):
 
             if medical_advisory(entries_content_list, countries_contents_dic, j) == "Quarantine":
                 decision = "Quarantine"
-            elif check_valid(entries_content_list) == "Reject":
+            elif check_valid(entries_content_list,j) == "Reject":
                 decision = "Reject"
-            elif not returning_residents(entries_content_list, j) == "Accept":
+            elif visit_visa(entries_content_list, countries_contents_dic, j) == "Reject":
                 decision = "Reject"
-            elif not visit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
-                decision = "Reject"
-            elif not transit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
+            elif transit_visa(entries_content_list, countries_contents_dic, j) == "Reject":
                 decision = "Reject"
             elif watch_list(entries_content_list, watchlist_contents_list, j) == "Secondary":
                 decision = "Secondary"
+            elif returning_residents(entries_content_list, j) == "Accept":
+                decision = "Accept"
             else:
                 decision = "Accept"
             decision_list.append(decision)
