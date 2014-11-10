@@ -88,6 +88,7 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
     try:
         if countries_contents_dic[each_entry["via"]["country"].upper()]["medical_advisory"] != "":
             return "Quarantine"
+        #Check via country information. As via is not a must-have information, can't return reject if not found
     except KeyError:
         return None
 
@@ -202,10 +203,10 @@ def decide(input_file, watchlist_file, countries_file):
         countries.close()
     except:
         raise FileNotFoundError
+    #in case file not found
     else:
         decision_list = []
         for j in range(0, len(entries_content_list)):
-
             if medical_advisory(entries_content_list, countries_contents_dic, j) == "Quarantine":
                 decision = "Quarantine"
             elif check_valid(entries_content_list,j) == "Reject":
