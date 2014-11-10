@@ -91,12 +91,16 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
 
     each_entry = entries_content_list[j]
 
-    if 'from' in each_entry.keys():
+    try:
         from_dic = each_entry["from"]
+        via_dic = each_entry["via"]
+    except KeyError:
+        return "Reject"
+    else:
         if from_dic["country"] in medical_advisory_list:
             return "Quarantine"
         elif from_dic["country"] not in medical_advisory_list and 'via' in each_entry.keys():
-            via_dic = each_entry["via"]
+
             if via_dic["country"] in medical_advisory_list:
                 return "Quarantine"
             else:
@@ -223,30 +227,23 @@ def decide(input_file, watchlist_file, countries_file):
         decision_list = []
         for j in range(-1, len(entries_content_list)-1):
             j += 1
-            if check_valid(entries_content_list) == "Reject":
+
+            if medical_advisory(entries_content_list, countries_contents_dic, j) == "Quarantine":
+                decision = "Quarantine"
+            elif check_valid(entries_content_list) == "Reject":
+                decision = "Reject"
+            elif not returning_residents(entries_content_list, j) == "Accept":
+                decision = "Reject"
+            elif not visit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
+                decision = "Reject"
+            elif not transit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
                 decision = "Reject"
             elif watch_list(entries_content_list, watchlist_contents_list, j) == "Secondary":
                 decision = "Secondary"
-            elif medical_advisory(entries_content_list, countries_contents_dic, j) == "Quarantine":
-                decision = "Quarantine"
-            elif returning_residents(entries_content_list, j) == "Accept":
-                decision = "Accept"
-            elif visit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
-                decision = "Accept"
-            elif transit_visa(entries_content_list, countries_contents_dic, j) == "Accept":
-                decision = "Accept"
             else:
-                decision = "Reject"
+                decision = "Accept"
             decision_list.append(decision)
         return decision_list
-
-    '''
-     quarantine, reject,
-        secondary, and accept.
-
-    '''
-
-
 
 
 def valid_passport_format(passport_number):
