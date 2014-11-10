@@ -24,7 +24,7 @@ def check_valid(entries_content_list,j):
     :param entries_content_list: List that loaded from a JSON formatted
         file that contains cases to decide
     :param j: Index for looping through all entries
-    :return: List of strings. Possible values of string is:"Reject"
+    :return: Strings. Possible values of string is:"Reject"
     """
     try:
         if not valid_passport_format(entries_content_list[j]["passport"]):
@@ -54,7 +54,7 @@ def watch_list(entries_content_list, watchlist_contents_list, j):
         JSON formatted file that contains
     names and passport numbers on a watchlist
     :param j: Index for looping through all entries
-    :return: List of strings. Possible values of string is:"Secondary"
+    :return: Strings. Possible values of string is:"Secondary"
     """
     each_entries_content = entries_content_list[j]
     for each_watchlist in watchlist_contents_list:
@@ -81,8 +81,7 @@ def medical_advisory(entries_content_list, countries_contents_dic, j):
     :param countries_contents_dic: Dictionary that loaded from a JSON
         formatted file that contains countries entry requirement information
     :param j: Index for looping through all entries
-    :return: List of strings. Possible values of strings are:
-        "Reject","Quarantine"
+    :return: Strings. Possible values of strings are:"Reject","Quarantine"
     """
 
     each_entry = entries_content_list[j]
@@ -108,7 +107,7 @@ def returning_residents(entries_content_list, j):
     :param entries_content_list: List that loaded from a
         JSON formatted file that contains cases to decide
     :param j: Index for looping through all entries
-    :return: List of strings. Possible values of string is:"Accept"
+    :return: Strings. Possible values of string is:"Accept"
     """
 
     each_entry = entries_content_list[j]
@@ -127,7 +126,7 @@ def visit_visa(entries_content_list, countries_contents_dic, j):
         JSON formatted file that contains
     countries entry requirement information
     :param j: Index for looping through all entries
-    :return: List of strings. Possible values of strings are:"Accept","Reject"
+    :return: Strings. Possible values of strings are:"Accept","Reject"
     """
 
     each_entry = entries_content_list[j]
@@ -166,7 +165,7 @@ def transit_visa(entries_content_list, countries_contents_dic,j):
         loaded from a JSON formatted file that contains
     countries entry requirement information
     :param j: Index for looping through all entries
-    :return: List of strings. Possible values of strings are:"Accept","Reject"
+    :return: Strings; Possible values of strings are:"Accept","Reject"
     """
 
     each_entry = entries_content_list[j]
@@ -206,7 +205,7 @@ def decide(input_file, watchlist_file, countries_file):
         file that contains country data, such as whether
         an entry or transit visa is required, and whether
         there is currently a medical advisory
-    :return: List of strings. Possible values of strings are:
+    :return: List of strings; Possible values of strings are:
         "Accept", "Reject", "Secondary", and "Quarantine"
     """
 
@@ -273,11 +272,14 @@ def valid_date_format(date_string):
     """(int)->Boolean
     Checks whether a date has the format YYYY-mm-dd in numbers
     :param date_string: date to be checked
-    :return: Boolean True if the format is valid, False otherwise
+    :return: Boolean; True if the format is valid, False otherwise
     """
     try:
         datetime.datetime.strptime(date_string, '%Y-%m-%d')
         return True
     except ValueError:
         return False
+
+
+print(decide("example_entries.json", "watchlist.json","countries.json"))
 
