@@ -17,12 +17,19 @@ import json
 
 
 def check_valid(entries_content_list,j):
-
+    """(list,int)-> str
+    Check if all the must have information is included
+    Check if passport number and birth date is in right format
+    Return reject if not included or right
+    :param entries_content_list: List that loaded from a JSON formatted file that contains cases to decide
+    :param j: Index for looping through all entries
+    :return: List of strings. Possible values of string is:"Reject"
+    """
     try:
         if not valid_passport_format(entries_content_list[j]["passport"]):
-            return False
+            return "Reject"
         if not valid_date_format(entries_content_list[j]["birth_date"]):
-            return False
+            return "Reject"
 
         entries_content_list[j]["home"]["city"]
         entries_content_list[j]["home"]["region"]
@@ -41,11 +48,13 @@ def check_valid(entries_content_list,j):
 
 
 def watch_list(entries_content_list, watchlist_contents_list, j):
-    """
+    """(list,list,int)-> str
     Checks if a person trying to enter the country is on the watchlist
-    :param input_file: The name of a JSON formatted file that contains cases to decide
-    :param watchlist_file: The name of a JSON formatted file that contains names and passport numbers on a watchlist
-    :return: List of strings. Possible values of strings are:"Secondary", None
+    :param entries_content_list: List that loaded from a JSON formatted file that contains cases to decide
+    :param watchlist_contents_list: List that loaded from a JSON formatted file that contains
+    names and passport numbers on a watchlist
+    :param j: Index for looping through all entries
+    :return: List of strings. Possible values of string is:"Secondary"
     """
     each_entries_content = entries_content_list[j]
     watchlist_first_name = []
@@ -55,6 +64,7 @@ def watch_list(entries_content_list, watchlist_contents_list, j):
         each_watchlist_first_name = each_watchlist["first_name"]
         checked_each_watchlist_first_name = each_watchlist_first_name.upper()
         watchlist_first_name .append(checked_each_watchlist_first_name)
+        #buiding list that contains all the passport numbers that are in watchlist
 
         each_watchlist_last_name = each_watchlist["last_name"]
         checked_each_watchlist_last_name = each_watchlist_last_name.upper()
@@ -63,6 +73,7 @@ def watch_list(entries_content_list, watchlist_contents_list, j):
         each_watchlist_passport = each_watchlist["passport"]
         checked_each_watchlist_passport = each_watchlist_passport.upper()
         watchlist_passport .append(checked_each_watchlist_passport)
+        #buiding list containing all the passport numbers that are in watchlist
     
     if each_entries_content['passport'].upper() in watchlist_passport:
         return "Secondary"
@@ -74,45 +85,49 @@ def watch_list(entries_content_list, watchlist_contents_list, j):
 
 
 def medical_advisory(entries_content_list, countries_contents_dic, j):
-    """
-    Checks if person needs to be quarantined
-    :param input_file: The name of a JSON formatted file that contains cases to decide
-    :param countries_file: The name of a JSON formatted file that contains country data, such as whether
-        an entry or transit visa is required, and whether there is currently a medical advisory
-    :return: List of strings. Possible values of strings are: "Quarantine", None, "Error: from or via country information"
+    """(list,dict,int)-> str
+    Checks if a person trying to enter the country has come from or via a country that requires medical advisory.
+    :param entries_content_list: List that loaded from a JSON formatted file that contains cases to decide
+    :param countries_contents_dic: Dictionary that loaded from a JSON formatted file that contains
+    countries entry requirement information
+    :param j: Index for looping through all entries
+    :return: List of strings. Possible values of strings are:"Reject","Quarantine"
     """
 
     each_entry = entries_content_list[j]
     try:
-        if countries_contents_dic[each_entry["from"]["country"]]["medical_advisory"] != "":
+        if countries_contents_dic[each_entry["from"]["country"].upper()]["medical_advisory"] != "":
             return "Quarantine"
     except KeyError:
         return "Reject"
     try:
-        if countries_contents_dic[each_entry["via"]["country"]]["medical_advisory"] != "":
+        if countries_contents_dic[each_entry["via"]["country"].upper()]["medical_advisory"] != "":
             return "Quarantine"
     except KeyError:
         return None
 
 
 def returning_residents(entries_content_list, j):
+    """(list,int)-> str
+    Checks if a person is a KAN resident returning home country.
+    :param entries_content_list: List that loaded from a JSON formatted file that contains cases to decide
+    :param j: Index for looping through all entries
+    :return: List of strings. Possible values of string is:"Accept"
     """
-    Checks if person is returning resident
-    :param input_file: The name of a JSON formatted file that contains cases to decide
-    :return: List of strings. Possible values of strings are: "Accept", None, "Reject"
-    """
+
     each_entry = entries_content_list[j]
     if each_entry["entry_reason"] == "returning" and each_entry["home"]["country"].upper() == "KAN":
         return "Accept"
 
 
 def visit_visa(entries_content_list, countries_contents_dic, j):
-    """
-    Checks if person needs a visitors visa and whether the visa is valid
-    :param input_file: The name of a JSON formatted file that contains cases to decide
-    :param countries_file: The name of a JSON formatted file that contains country data, such as whether
-        an entry or transit visa is required, and whether there is currently a medical advisory
-    :return: List of strings. Possible values of strings are: "Accept", None, "Reject for visa not valid"
+    """(list,dict,int)-> str
+    Checks if a person entering a certain country as a visitor will be asked for a visit visa
+    :param entries_content_list: List that loaded from a JSON formatted file that contains cases to decide
+    :param countries_contents_dic: Dictionary that loaded from a JSON formatted file that contains
+    countries entry requirement information
+    :param j: Index for looping through all entries
+    :return: List of strings. Possible values of strings are:"Accept","Reject"
     """
 
     each_entry = entries_content_list[j]
@@ -138,12 +153,13 @@ def visit_visa(entries_content_list, countries_contents_dic, j):
 
 
 def transit_visa(entries_content_list, countries_contents_dic,j):
-    """
-    Checks if person needs a transit visa and whether the visa is valid
-    :param input_file: The name of a JSON formatted file that contains cases to decide
-    :param countries_file: The name of a JSON formatted file that contains country data, such as whether
-        an entry or transit visa is required, and whether there is currently a medical advisory
-    :return: List of strings. Possible values of strings are: "Accept", "Reject"
+    """(list,dict,int)-> str
+    Checks if a person entering a certain country as a visitor will be asked for a transit visa
+    :param entries_content_list: List that loaded from a JSON formatted file that contains cases to decide
+    :param countries_contents_dic: Dictionary that loaded from a JSON formatted file that contains
+    countries entry requirement information
+    :param j: Index for looping through all entries
+    :return: List of strings. Possible values of strings are:"Accept","Reject"
     """
 
     each_entry = entries_content_list[j]
@@ -169,7 +185,7 @@ def transit_visa(entries_content_list, countries_contents_dic,j):
 
 
 def decide(input_file, watchlist_file, countries_file):
-    """
+    """(json,json,json)->str
     Decides whether a traveller's entry into Kanadia should be accepted
     :param input_file: The name of a JSON formatted file that contains cases to decide
     :param watchlist_file: The name of a JSON formatted file that contains names and passport numbers on a watchlist
@@ -177,9 +193,6 @@ def decide(input_file, watchlist_file, countries_file):
         an entry or transit visa is required, and whether there is currently a medical advisory
     :return: List of strings. Possible values of strings are: "Accept", "Reject", "Secondary", and "Quarantine"
     """
-    #Ask Sasa if returns in this section should be in list or as str; if as str
-    #Needs to loop through a list of the people (iterate through all of the visitors) -- use a for loop
-    #Open the files in decide and save them in a dictionary
 
     try:
         with open(input_file, "r") as entries:
@@ -221,7 +234,7 @@ def decide(input_file, watchlist_file, countries_file):
 
 
 def valid_passport_format(passport_number):
-    """
+    """(int)->Boolean
     Checks whether a passport number is five sets of five alpha-number characters separated by dashes
     :param passport_number: alpha-numeric string
     :return: Boolean; True if the format is valid, False otherwise
@@ -235,7 +248,7 @@ def valid_passport_format(passport_number):
 
 
 def valid_date_format(date_string):
-    """
+    """(int)->Boolean
     Checks whether a date has the format YYYY-mm-dd in numbers
     :param date_string: date to be checked
     :return: Boolean True if the format is valid, False otherwise
