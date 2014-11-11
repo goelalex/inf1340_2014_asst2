@@ -16,7 +16,7 @@ import datetime
 import json
 
 
-def check_valid(entries_content_list,index):
+def check_valid(entries_content_list, index):
     """(list,int)-> str
     Check if all the must have information is included
     Check if passport number and birth date is in right format
@@ -125,7 +125,7 @@ def visit_visa(entries_content_list, countries_contents_dic, index):
     :param countries_contents_dic: Dictionary that loaded from a
         JSON formatted file that contains
     countries entry requirement information
-    :param j: Index for looping through all entries
+    :param index: Index for looping through all entries
     :return: Strings. Possible values of strings are:"Accept","Reject"
     """
 
