@@ -53,13 +53,8 @@ def watch_list(entries_content_list, watchlist_contents_list, index):
     :param watchlist_contents_list: List that loaded from a
         JSON formatted file that contains
     names and passport numbers on a watchlist
-<<<<<<< HEAD
-    :param index: Index for looping through all entries
-    :return: List of strings. Possible values of string is:"Secondary"
-=======
     :param j: Index for looping through all entries
     :return: Strings. Possible values of string is:"Secondary"
->>>>>>> FETCH_HEAD
     """
     each_entries_content = entries_content_list[index]
     for each_watchlist in watchlist_contents_list:
@@ -85,14 +80,8 @@ def medical_advisory(entries_content_list, countries_contents_dic, index):
         JSON formatted file that contains cases to decide
     :param countries_contents_dic: Dictionary that loaded from a JSON
         formatted file that contains countries entry requirement information
-<<<<<<< HEAD
-    :param index: Index for looping through all entries
-    :return: List of strings. Possible values of strings are:
-        "Reject","Quarantine"
-=======
     :param j: Index for looping through all entries
     :return: Strings. Possible values of strings are:"Reject","Quarantine"
->>>>>>> FETCH_HEAD
     """
 
     each_entry = entries_content_list[index]
@@ -117,13 +106,8 @@ def returning_residents(entries_content_list, index):
     Checks if a person is a KAN resident returning home country.
     :param entries_content_list: List that loaded from a
         JSON formatted file that contains cases to decide
-<<<<<<< HEAD
-    :param index: Index for looping through all entries
-    :return: List of strings. Possible values of string is:"Accept"
-=======
     :param j: Index for looping through all entries
     :return: Strings. Possible values of string is:"Accept"
->>>>>>> FETCH_HEAD
     """
 
     each_entry = entries_content_list[index]
@@ -141,13 +125,8 @@ def visit_visa(entries_content_list, countries_contents_dic, index):
     :param countries_contents_dic: Dictionary that loaded from a
         JSON formatted file that contains
     countries entry requirement information
-<<<<<<< HEAD
-    :param index: Index for looping through all entries
-    :return: List of strings. Possible values of strings are:"Accept","Reject"
-=======
     :param j: Index for looping through all entries
     :return: Strings. Possible values of strings are:"Accept","Reject"
->>>>>>> FETCH_HEAD
     """
 
     each_entry = entries_content_list[index]
@@ -185,13 +164,8 @@ def transit_visa(entries_content_list, countries_contents_dic, index):
     :param countries_contents_dic: Dictionary that
         loaded from a JSON formatted file that contains
     countries entry requirement information
-<<<<<<< HEAD
-    :param index: Index for looping through all entries
-    :return: List of strings. Possible values of strings are:"Accept","Reject"
-=======
     :param j: Index for looping through all entries
     :return: Strings; Possible values of strings are:"Accept","Reject"
->>>>>>> FETCH_HEAD
     """
 
     each_entry = entries_content_list[index]
