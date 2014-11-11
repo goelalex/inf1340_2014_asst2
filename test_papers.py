@@ -22,6 +22,8 @@ def test_basic():
         == ["Secondary"]
     assert decide("test_quarantine.json", "watchlist.json", "countries.json")\
         == ["Quarantine"]
+
+
 def test_problematic():
     assert decide("test_added_entries.json", "watchlist.json", "countries.json")\
         == ["Accept", "Accept", "Accept", "Accept", "Accept"]
@@ -31,12 +33,26 @@ def test_problematic():
         == ["Reject", "Reject", "Reject", "Reject", "Reject"]
 
 
-
 def test_files():
     with pytest.raises(FileNotFoundError):
         decide("test_returning_citizen.json", "", "countries.json")
 
 
-print(decide("example_entries.json", "watchlist.json","countries.json"))
+def test_example_entries():
+    assert decide("example_entries.json", "watchlist.json","countries.json")\
+        == ['Accept', 'Secondary', 'Secondary', 'Quarantine', 'Quarantine', 'Accept',
+            'Accept', 'Accept', 'Accept', 'Accept', 'Quarantine', 'Quarantine', 'Quarantine',
+            'Quarantine', 'Accept', 'Accept', 'Quarantine', 'Accept', 'Quarantine', 'Accept',
+            'Accept', 'Accept', 'Accept', 'Accept', 'Accept', 'Reject', 'Reject', 'Quarantine',
+            'Quarantine', 'Secondary', 'Quarantine', 'Quarantine', 'Quarantine', 'Quarantine',
+            'Accept', 'Reject', 'Reject', 'Quarantine', 'Accept', 'Quarantine', 'Accept', 'Accept',
+            'Reject', 'Accept', 'Accept', 'Accept', 'Quarantine', 'Accept', 'Accept', 'Accept',
+            'Quarantine', 'Accept', 'Accept', 'Accept', 'Accept', 'Accept', 'Quarantine', 'Accept',
+            'Accept', 'Accept', 'Accept', 'Accept', 'Quarantine', 'Quarantine', 'Accept', 'Reject',
+            'Accept', 'Reject', 'Accept', 'Accept', 'Accept', 'Accept', 'Accept', 'Quarantine',
+            'Reject', 'Accept', 'Accept', 'Reject', 'Quarantine', 'Accept', 'Reject', 'Quarantine',
+            'Quarantine', 'Accept', 'Reject', 'Accept', 'Accept', 'Accept', 'Accept', 'Accept', 'Accept',
+            'Accept', 'Accept', 'Quarantine', 'Reject', 'Reject']
+
 
 # add functions for other tests
