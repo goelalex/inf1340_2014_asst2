@@ -2,10 +2,10 @@
 
 """ Computer-based immigration office for Kanadia """
 
-__author__ = 'Susan Sim'
-__email__ = "ses@drsusansim.org"
+__author__ = 'Susan Sim, Xiwen Zhou, Alex Goel'
+__email__ = "ses@drsusansim.org, Xiwen Zhou <xw.zhou@mail.utoronto.ca>, alex.goel@mail.utoronto.ca"
 
-__copyright__ = "2014 Susan Sim"
+__copyright__ = "2014 Susan Sim, Xiwen Zhou, Alex Goel"
 __license__ = "MIT License"
 
 __status__ = "Prototype"
