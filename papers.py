@@ -16,30 +16,30 @@ import datetime
 import json
 
 
-def check_valid(entries_content_list,j):
+def check_valid(entries_content_list,index):
     """(list,int)-> str
     Check if all the must have information is included
     Check if passport number and birth date is in right format
     Return reject if not included or right
     :param entries_content_list: List that loaded from a JSON formatted
         file that contains cases to decide
-    :param j: Index for looping through all entries
+    :param index: Index for looping through all entries
     :return: Strings. Possible values of string is:"Reject"
     """
     try:
-        if not valid_passport_format(entries_content_list[j]["passport"]):
+        if not valid_passport_format(entries_content_list[index]["passport"]):
             return "Reject"
-        if not valid_date_format(entries_content_list[j]["birth_date"]):
+        if not valid_date_format(entries_content_list[index]["birth_date"]):
             return "Reject"
-        entries_content_list[j]["home"]["city"]
-        entries_content_list[j]["home"]["region"]
-        entries_content_list[j]["home"]["country"]
-        entries_content_list[j]["from"]["city"]
-        entries_content_list[j]["from"]["region"]
-        entries_content_list[j]["from"]["country"]
-        entries_content_list[j]["first_name"]
-        entries_content_list[j]["last_name"]
-        entries_content_list[j]["entry_reason"]
+        entries_content_list[index]["home"]["city"]
+        entries_content_list[index]["home"]["region"]
+        entries_content_list[index]["home"]["country"]
+        entries_content_list[index]["from"]["city"]
+        entries_content_list[index]["from"]["region"]
+        entries_content_list[index]["from"]["country"]
+        entries_content_list[index]["first_name"]
+        entries_content_list[index]["last_name"]
+        entries_content_list[index]["entry_reason"]
         #check for must-contain information
     except KeyError:
         return "Reject"
@@ -53,7 +53,7 @@ def watch_list(entries_content_list, watchlist_contents_list, index):
     :param watchlist_contents_list: List that loaded from a
         JSON formatted file that contains
     names and passport numbers on a watchlist
-    :param j: Index for looping through all entries
+    :param index: Index for looping through all entries
     :return: Strings. Possible values of string is:"Secondary"
     """
     each_entries_content = entries_content_list[index]
@@ -80,7 +80,7 @@ def medical_advisory(entries_content_list, countries_contents_dic, index):
         JSON formatted file that contains cases to decide
     :param countries_contents_dic: Dictionary that loaded from a JSON
         formatted file that contains countries entry requirement information
-    :param j: Index for looping through all entries
+    :param index: Index for looping through all entries
     :return: Strings. Possible values of strings are:"Reject","Quarantine"
     """
 
@@ -106,7 +106,7 @@ def returning_residents(entries_content_list, index):
     Checks if a person is a KAN resident returning home country.
     :param entries_content_list: List that loaded from a
         JSON formatted file that contains cases to decide
-    :param j: Index for looping through all entries
+    :param index: Index for looping through all entries
     :return: Strings. Possible values of string is:"Accept"
     """
 
@@ -164,7 +164,7 @@ def transit_visa(entries_content_list, countries_contents_dic, index):
     :param countries_contents_dic: Dictionary that
         loaded from a JSON formatted file that contains
     countries entry requirement information
-    :param j: Index for looping through all entries
+    :param index: Index for looping through all entries
     :return: Strings; Possible values of strings are:"Accept","Reject"
     """
 
